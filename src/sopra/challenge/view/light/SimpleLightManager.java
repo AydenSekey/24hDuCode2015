@@ -34,7 +34,7 @@ public class SimpleLightManager  implements LightManager {
 	 */
 	public SimpleLightManager(BlockWorld blocWorld) {
 		world = blocWorld;
-		lightTauxChangement = 0.01f;
+		lightTauxChangement = 0.001f;
 		limiteDayNight = 0.2f;
 	}
 
@@ -51,8 +51,8 @@ public class SimpleLightManager  implements LightManager {
 	@Override
 	public void increaseLight() {
 		float light = world.getGlobalLight() + lightTauxChangement;
-		if(light > 0) {
-			light = 0.0f;
+		if(light > 1) {
+			light = 1.0f;
 		}
 		world.setGlobalLight(light);
 	}
