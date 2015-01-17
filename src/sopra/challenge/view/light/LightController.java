@@ -64,15 +64,20 @@ public class LightController implements LightTimeController {
 			lastDemiJourneeTime = time;
 		}
 		if(time - lastTime >= LIGHT_REFRESH_TIME) {
+			// rafraichissement de la lumière
 			final boolean isNight = lightManager.isNight();
 			if(leveeJour) {
+				// le jour est en train de se lever
 				lightManager.increaseLight();
 				if(lightListener != null && !isNight && oldIsNight) {
+					// passage de la nuit au jour
 					lightListener.dayStart();
 				}
 			} else {
+				// la nuit est en train de tomber
 				lightManager.decreaseLight();
 				if(lightListener != null && isNight && !oldIsNight) {
+					// passage du jour à la nuit
 					lightListener.nightStart();
 				}
 			}
