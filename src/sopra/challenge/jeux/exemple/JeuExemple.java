@@ -1,6 +1,9 @@
 package sopra.challenge.jeux.exemple;
 
+import sopra.challenge.labyrinthe.Labyrinthe;
+import sopra.challenge.labyrinthe.Position;
 import sopra.challenge.labyrinthe.generateurLabyrinthe.GenerateurLabyrinthe2D;
+import sopra.challenge.personnages.Monstre;
 import sopra.challenge.personnages.generateurMonstre.GenerateurMonstre;
 
 public class JeuExemple {
@@ -13,7 +16,7 @@ public class JeuExemple {
 		generateur.placerArriver(13,19);
 		
 		generateur.placerArriver(19,18);
-		/*Création du chemin*/
+		/*CrÃ©ation du chemin*/
 		generateur.rendreLibre(9,10);
 		generateur.rendreLibre(8,10);
 		generateur.rendreLibre(7,10);
@@ -116,8 +119,14 @@ public class JeuExemple {
 		
 		GenerateurMonstre generateurMonstre = new GenerateurMonstre();
 		generateurMonstre.genererMonstres(10);
-		generateur.afficherLabyrinthe();
-
+		
+		Labyrinthe labyrinthe = Labyrinthe.getInstance();
+		labyrinthe.afficherLabyrinthe();
+		
+		
+		labyrinthe.deplacerLesMonstres();
+		labyrinthe.afficherLabyrinthe();
+		
 	}
 
 }
