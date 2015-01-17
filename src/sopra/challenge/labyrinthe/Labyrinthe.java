@@ -2,6 +2,7 @@ package sopra.challenge.labyrinthe;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import sopra.challenge.personnages.Monstre;
 
@@ -20,6 +21,33 @@ public class Labyrinthe {
 	public static Labyrinthe getInstance()
 	{	
 		return INSTANCE;
+	}
+	
+	public Monstre creerMonstre(){
+		Monstre m = new Monstre();
+		monstres.add(m);
+		return m;
+	}
+	
+	public void positionnerMonstre(Monstre m){
+		Random rand = new Random();
+		List<Bloc> zonesLibre = getZonesLibre();
+		Integer nbZonesLibre = zonesLibre.size();
+		if(nbZonesLibre > 0){
+			Integer posListeZone = rand.nextInt(nbZonesLibre);
+			Bloc bloc = zonesLibre.get(posListeZone);
+			m.setPositionBloc(bloc);
+		}
+	}
+	
+	public List<Bloc> getZonesLibre(){
+		List<Bloc> zonesLibre = new LinkedList<>();
+		for (Bloc bloc : blocs) {
+			if(bloc.isZone() && !bloc.isOccupee() && !bloc.isZoneArrivee() && !bloc.isZoneDepart()){
+				zonesLibre.add(bloc);
+			}
+		}
+		return zonesLibre;
 	}
 	
 	public int getNbLignes() {
