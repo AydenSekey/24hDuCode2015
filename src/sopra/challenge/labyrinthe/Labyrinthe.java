@@ -102,5 +102,13 @@ public class Labyrinthe {
 	public void setBlocs(List<Bloc> blocs) {
 		this.blocs = blocs;
 	}
+	
+	public Bloc getDepart() {
+		for(Bloc b: blocs){
+			if(b.isZoneDepart())
+				return b;
+		}
+		return null;
+	}
 
 }

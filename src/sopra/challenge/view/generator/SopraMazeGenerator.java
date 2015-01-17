@@ -16,7 +16,7 @@ public class SopraMazeGenerator implements DataGenerator {
 
     public SopraMazeGenerator(Labyrinthe l) {
     	this.labyrinthe = l;
-        this.nrLayers = 2;
+        this.nrLayers = 1;
     }
 
     @Override
