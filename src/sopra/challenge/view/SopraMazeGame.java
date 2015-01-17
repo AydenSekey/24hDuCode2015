@@ -33,6 +33,9 @@ import com.ardorcraft.control.FlyControl;
 
 import sopra.challenge.view.impor.LocalServerConnection;
 import sopra.challenge.view.impor.LocalServerDataHandler;
+import sopra.challenge.view.light.LightController;
+import sopra.challenge.view.light.LightManager;
+import sopra.challenge.view.light.SimpleLightManager;
 
 import com.ardorcraft.player.PlayerBase;
 import com.ardorcraft.world.BlockWorld;
@@ -52,6 +55,7 @@ public class SopraMazeGame implements ArdorCraftGame {
     private Node root;
     private Camera camera;
     private PlayerBase player;
+    private LightController lightController;
 
     @Override
     public void update(final ReadOnlyTimer timer) {
@@ -63,6 +67,7 @@ public class SopraMazeGame implements ArdorCraftGame {
         // The infinite world update
         blockWorld.updatePlayer(player.getPosition(), player.getDirection());
         blockWorld.update(timer);
+        lightController.timeRun();
     }
 
     @Override
@@ -116,6 +121,11 @@ public class SopraMazeGame implements ArdorCraftGame {
         blockWorld = new BlockWorld(settings);
         root.attachChild(blockWorld.getWorldNode());
 
+        // Ajout d'un light manager sur le monde
+        LightManager lightManager = new SimpleLightManager(blockWorld);
+        // Création du light contrôleur
+        lightController = new LightController(lightManager);
+        
         // Start the processing!
         blockWorld.startThreads();
     }
