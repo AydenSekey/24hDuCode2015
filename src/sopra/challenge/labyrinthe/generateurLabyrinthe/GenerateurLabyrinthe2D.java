@@ -65,7 +65,12 @@ public class GenerateurLabyrinthe2D {
 	public void afficherLabyrinthe(){
 		for(int i=0;i<laby.nbLignes; i++){
 			for(int j=0;j<laby.nbColonnes; j++){
-				System.out.print(laby.getBloc(i, j));
+				Bloc bloc = laby.getBloc(i, j);
+				if(bloc.isZone() && bloc.isOccupee()){
+					System.out.print(" M ");
+				}else{
+					System.out.print(laby.getBloc(i, j));
+				}
 			}
 			System.out.print("\n");
 		}

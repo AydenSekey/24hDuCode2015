@@ -57,6 +57,7 @@ public class Labyrinthe {
 			Integer posListeZone = rand.nextInt(nbZonesLibre);
 			Bloc bloc = zonesLibre.get(posListeZone);
 			m.setPositionBloc(bloc);
+			bloc.setOccupee(true);
 		}
 	}
 	
