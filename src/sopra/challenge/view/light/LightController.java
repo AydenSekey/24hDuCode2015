@@ -23,8 +23,6 @@ package sopra.challenge.view.light;
 
 import java.util.Date;
 
-import com.ardor3d.util.ReadOnlyTimer;
-
 public class LightController implements LightTimeController {
 	private static final long LIGHT_REFRESH_TIME = 10;// temps entre les refreshs de la lumière (0.01s)
 	private final long dureeDemiJournee;

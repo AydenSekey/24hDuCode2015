@@ -1,6 +1,6 @@
 package sopra.challenge.labyrinthe;
 
-public class MurNormal extends Mur{
+public class MurNormal extends Mur  {
 
 	public MurNormal(int x, int y) {
 		super(x, y);
@@ -29,6 +29,12 @@ public class MurNormal extends Mur{
 
 	@Override
 	public boolean isZoneDepart() {
+		return false;
+	}
+
+	@Override
+	public boolean isPorte() {
+		// TODO Auto-generated method stub
 		return false;
 	}
 	
