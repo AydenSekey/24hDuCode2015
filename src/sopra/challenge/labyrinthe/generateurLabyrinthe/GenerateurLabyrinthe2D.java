@@ -1,9 +1,7 @@
 package sopra.challenge.labyrinthe.generateurLabyrinthe;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import sopra.challenge.labyrinthe.Bloc;
@@ -72,7 +70,10 @@ public class GenerateurLabyrinthe2D {
 			System.out.print("\n");
 		}
 	}
-	
+	public void rendreLibre(int x, int y){
+		Bloc bloc = laby.getBloc(x, y);
+		this.rendreLibre(bloc);
+	}
 	public void rendreLibre(Bloc unBloc){
 		laby.removeBloc(unBloc);
 		Zone zd = new Zone(unBloc.positionBloc.coordX, unBloc.positionBloc.coordY);

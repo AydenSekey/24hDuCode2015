@@ -23,6 +23,8 @@ public abstract class Bloc {
 
 	public abstract boolean isZoneDepart();
 	
+	public abstract boolean isPorte();
+	
 	public boolean isOccupee() {
 		return occupee;
 	}
@@ -38,8 +40,8 @@ public abstract class Bloc {
 	public void setPositionBloc(Position positionBloc) {
 		this.positionBloc = positionBloc;
 	}
+	
 	public boolean estALaPosition(int x , int y){
 		return (this.getPositionBloc().coordX ==x) && (this.getPositionBloc().coordY ==y);
 	}
-	
 }

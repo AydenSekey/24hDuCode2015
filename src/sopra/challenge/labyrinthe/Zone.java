@@ -38,4 +38,9 @@ public class Zone extends Bloc {
 	public String toString(){
 		return "   ";
 	}
+
+	@Override
+	public boolean isPorte() {
+		return false;
+	}
 }

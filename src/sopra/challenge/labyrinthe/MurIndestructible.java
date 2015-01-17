@@ -31,6 +31,11 @@ public class MurIndestructible extends Mur {
 		return false;
 	}
 	public String toString(){
-		return " £ ";
+		return " & ";
+	}
+
+	@Override
+	public boolean isPorte() {
+		return false;
 	}
 }
