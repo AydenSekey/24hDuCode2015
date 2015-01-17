@@ -2,33 +2,80 @@ package sopra.challenge.labyrinthe;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
+
+import sopra.challenge.personnages.Monstre;
 
 public class Labyrinthe {
-	public int nbX =0;
-	public int nbY= 0;
+	
+	private static Labyrinthe INSTANCE= new Labyrinthe() ;
+	
+	public int nbLignes =0;
+	public int nbColonnes= 0;
 	public String nom= null;
 	public List<Bloc> blocs= new LinkedList<Bloc>();
+	public List<Monstre> monstres= new LinkedList<Monstre>();
 	
-	public Labyrinthe(String nomLaby, int nbLignes, int nbColonnes){
-		setNom(nomLaby);
-		setCoordX(nbLignes);
-		setCoordY(nbColonnes);
+	private Labyrinthe(){}
+	
+	public static Labyrinthe getInstance()
+	{	
+		return INSTANCE;
+	}
+
+	public Bloc getBloc(int x,int y){
+		for(Bloc b: blocs){
+			if(b.estALaPosition(x, y)){
+				return b;
+			}
+		}
+		return null;
+	}
+	public void removeBloc(Bloc b){
+		this.blocs.remove(b);
 	}
 	
-	public int getCoordX() {
-		return nbX;
+	public Monstre creerMonstre(){
+		Monstre m = new Monstre();
+		monstres.add(m);
+		return m;
+	}
+	
+	public void positionnerMonstre(Monstre m){
+		Random rand = new Random();
+		List<Bloc> zonesLibre = getZonesLibre();
+		Integer nbZonesLibre = zonesLibre.size();
+		if(nbZonesLibre > 0){
+			Integer posListeZone = rand.nextInt(nbZonesLibre);
+			Bloc bloc = zonesLibre.get(posListeZone);
+			m.setPositionBloc(bloc);
+		}
+	}
+	
+	public List<Bloc> getZonesLibre(){
+		List<Bloc> zonesLibre = new LinkedList<>();
+		for (Bloc bloc : blocs) {
+			if(bloc.isZone() && !bloc.isOccupee() && !bloc.isZoneArrivee() && !bloc.isZoneDepart()){
+				zonesLibre.add(bloc);
+			}
+		}
+		return zonesLibre;
+	}
+	
+	public int getNbLignes() {
+		return nbLignes;
 	}
 
-	public void setCoordX(int coordX) {
-		this.nbX = coordX;
+	public void setNbLignes(int nb) {
+		this.nbLignes = nb;
 	}
 
-	public int getCoordY() {
-		return nbY;
+	public int getNbColonnes() {
+		return nbColonnes;
 	}
 
-	public void setCoordY(int coordY) {
-		this.nbY = coordY;
+	public void setNbColonnes(int nb) {
+		this.nbColonnes = nb;
 	}
 
 	public String getNom() {
@@ -47,7 +94,4 @@ public class Labyrinthe {
 		this.blocs = blocs;
 	}
 
-		
-	
-	
 }
