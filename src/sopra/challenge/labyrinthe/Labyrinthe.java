@@ -3,16 +3,23 @@ package sopra.challenge.labyrinthe;
 import java.util.LinkedList;
 import java.util.List;
 
+import sopra.challenge.personnages.Monstre;
+
 public class Labyrinthe {
+	
+	private static Labyrinthe INSTANCE= new Labyrinthe() ;
+	
 	public int nbX =0;
 	public int nbY= 0;
 	public String nom= null;
 	public List<Bloc> blocs= new LinkedList<Bloc>();
+	public List<Monstre> monstres= new LinkedList<Monstre>();
 	
-	public Labyrinthe(String nomLaby, int nbLignes, int nbColonnes){
-		setNom(nomLaby);
-		setCoordX(nbLignes);
-		setCoordY(nbColonnes);
+	private Labyrinthe(){}
+	
+	public static Labyrinthe getInstance()
+	{	
+		return INSTANCE;
 	}
 	
 	public int getCoordX() {
