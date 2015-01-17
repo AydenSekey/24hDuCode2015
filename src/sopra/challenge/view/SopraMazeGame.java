@@ -162,7 +162,7 @@ public class SopraMazeGame implements ArdorCraftGame {
 
 		// Create a local "fake" server
 		final IServerConnection serverConnection = new LocalServerConnection(new LocalServerDataHandler(tileSize,
-				height, gridSize, new SopraMazeGenerator(this.labyrinthe), null));
+				height, gridSize, new SopraMazeGenerator(), null));
 		settings.setServerConnection(serverConnection);
 
 		// Create the actual world and put its world node under our main scenegraph node.

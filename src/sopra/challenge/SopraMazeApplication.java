@@ -3,13 +3,14 @@ package sopra.challenge;
 import sopra.challenge.labyrinthe.Labyrinthe;
 import sopra.challenge.labyrinthe.generateurLabyrinthe.GenerateurLabyrinthe2D;
 import sopra.challenge.view.SopraMazeGame;
+import sopra.challenge.view.SopraMazeMazeGame;
 import sopra.challenge.view.impor.ArdorBaseApplication;
 
 
 public class SopraMazeApplication extends ArdorBaseApplication{
 
 	public SopraMazeApplication(Labyrinthe l) {
-		super(new SopraMazeGame(l));
+		super(new SopraMazeMazeGame(l));
 	}
 	
 	public static void main(final String[] args) {
@@ -24,7 +25,7 @@ public class SopraMazeApplication extends ArdorBaseApplication{
 		generateur.definirMursIndestructibles();
 		generateur.placerDepart(10, 10);
 		generateur.placerArriver(19,18);
-		/*Création du chemin*/
+		/*Crï¿½ation du chemin*/
 		generateur.rendreLibre(9,10);
 		generateur.rendreLibre(8,10);
 		generateur.rendreLibre(7,10);
