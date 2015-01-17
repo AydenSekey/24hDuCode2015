@@ -1,8 +1,9 @@
 /*
-Copyright SopraSteria (2015)
+
+Copyright Sopra Steria (2015)
 contributor(s) : see contributors.txt
 
-[e-mail of the author(s)]
+adrien.duroy@soprasteria.com
 
 This file is part of <programm name>.
 
@@ -38,6 +39,5 @@ public class Main {
 		LocalDate date = LocalDate.now();
 
 		System.out.println(date);
-
-		}
+    }
 }
