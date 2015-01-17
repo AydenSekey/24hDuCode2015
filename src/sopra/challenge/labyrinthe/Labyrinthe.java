@@ -21,7 +21,17 @@ public class Labyrinthe {
 	{	
 		return INSTANCE;
 	}
-	
+	public Bloc getBloc(int x,int y){
+		for(Bloc b: blocs){
+			if(b.estALaPosition(x, y)){
+				return b;
+			}
+		}
+		return null;
+	}
+	public void removeBloc(Bloc b){
+		this.blocs.remove(b);
+	}
 	public int getNbLignes() {
 		return nbLignes;
 	}

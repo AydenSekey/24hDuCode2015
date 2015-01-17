@@ -35,5 +35,7 @@ public class Zone extends Bloc {
 	public boolean isZoneDepart() {
 		return false;
 	}
-
+	public String toString(){
+		return "   ";
+	}
 }

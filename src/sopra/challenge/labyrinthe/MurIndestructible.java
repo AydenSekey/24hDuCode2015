@@ -30,5 +30,7 @@ public class MurIndestructible extends Mur {
 	public boolean isZoneDepart() {
 		return false;
 	}
-	
+	public String toString(){
+		return " £ ";
+	}
 }

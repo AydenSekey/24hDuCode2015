@@ -30,5 +30,8 @@ public class ZoneArrivee extends Zone{
 	public boolean isZoneDepart() {
 		return false;
 	}
-
+	
+	public String toString(){
+		return " A ";
+	}
 }

@@ -15,7 +15,5 @@ public class GenerateurLabyrinthe {
 		
 		return false;
 	}
-	
-	
 
 }

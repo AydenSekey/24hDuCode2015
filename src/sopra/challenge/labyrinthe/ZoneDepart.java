@@ -31,5 +31,8 @@ public class ZoneDepart extends Zone {
 	public boolean isZoneDepart() {
 		return true;
 	}
-
+	
+	public String toString(){
+		return " D ";
+	}
 }
