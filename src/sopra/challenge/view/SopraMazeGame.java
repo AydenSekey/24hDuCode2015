@@ -25,6 +25,7 @@ import com.ardor3d.util.ReadOnlyTimer;
 import com.ardor3d.util.resource.ResourceLocatorTool;
 import com.ardor3d.util.resource.SimpleResourceLocator;
 
+import sopra.challenge.labyrinthe.Labyrinthe;
 import sopra.challenge.view.generator.SopraMazeGenerator;
 import sopra.challenge.view.impor.ArdorCraftGame;
 import sopra.challenge.view.impor.CanvasRelayer;
@@ -37,6 +38,7 @@ import sopra.challenge.view.light.LightController;
 import sopra.challenge.view.light.LightManager;
 import sopra.challenge.view.light.SimpleLightManager;
 
+import com.ardorcraft.objects.SkyDome;
 import com.ardorcraft.player.PlayerBase;
 import com.ardorcraft.world.BlockWorld;
 import com.ardorcraft.world.IServerConnection;
@@ -50,19 +52,26 @@ public class SopraMazeGame implements ArdorCraftGame {
 
     private BlockWorld blockWorld;
     private final int tileSize = 16;
-    private final int gridSize = 16;
-    private final int height = 32;
+    private final int gridSize = 50;
+    private final int height = 10;
     private Node root;
     private Camera camera;
     private PlayerBase player;
+    private Labyrinthe labyrinthe;
+    private SkyDome skyDome;
     private LightController lightController;
-
+    
+    public SopraMazeGame(Labyrinthe labyrinthe) {
+    	this.labyrinthe = labyrinthe;
+    }
     @Override
     public void update(final ReadOnlyTimer timer) {
         camera.setLocation(player.getPosition());
         camera.setDirection(player.getDirection());
         camera.setUp(player.getUp());
         camera.setLeft(player.getLeft());
+        
+        skyDome.setTranslation(player.getPosition());
 
         // The infinite world update
         blockWorld.updatePlayer(player.getPosition(), player.getDirection());
@@ -72,6 +81,7 @@ public class SopraMazeGame implements ArdorCraftGame {
 
     @Override
     public void render(final Renderer renderer) {
+    	skyDome.draw(renderer);
         root.draw(renderer);
     }
 
@@ -111,10 +121,14 @@ public class SopraMazeGame implements ArdorCraftGame {
         settings.setTileHeight(height);
         settings.setGridSize(gridSize);
         settings.setUseVBO(false);
+        
+        //sky
+        skyDome = new SkyDome("Dome", 8, 8, 10);
+        root.attachChild(skyDome);
 
         // Create a local "fake" server
         final IServerConnection serverConnection = new LocalServerConnection(new LocalServerDataHandler(tileSize,
-                height, gridSize, new SopraMazeGenerator(0,0), null));
+                height, gridSize, new SopraMazeGenerator(this.labyrinthe), null));
         settings.setServerConnection(serverConnection);
 
         // Create the actual world and put its world node under our main scenegraph node.
