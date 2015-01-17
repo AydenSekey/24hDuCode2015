@@ -1,31 +1,45 @@
-package sopra.challenge;
+/*
+Copyright Sopra Steria (2015)
+contributor(s) : see contributors.txt
+
+adrien.duroy@soprasteria.com
+
+This file is part of SopraMaze.
+
+SopraMaze is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+<programm name> is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with SopraMaze.  If not, see <http://www.gnu.org/licenses/>.
+*/
+package sopra.challenge.labyrinthe.fabrique;
 
 import sopra.challenge.labyrinthe.Labyrinthe;
 import sopra.challenge.labyrinthe.generateurLabyrinthe.GenerateurLabyrinthe2D;
-import sopra.challenge.view.SopraMazeGame;
-import sopra.challenge.view.SopraMazeMazeGame;
-import sopra.challenge.view.impor.ArdorBaseApplication;
 
+/**
+ * Fabrique pour les différents labyrinthes.
+ */
+public class FabriqueLabyrinthe {
 
-public class SopraMazeApplication extends ArdorBaseApplication{
-
-	public SopraMazeApplication(Labyrinthe l) {
-		super(new SopraMazeMazeGame(l));
-	}
-	
-	public static void main(final String[] args) {
-		Labyrinthe labyrinthe = recupererLab();
-		final ArdorBaseApplication sopraEx = new SopraMazeApplication(labyrinthe);
-		new Thread(sopraEx, "MainArdorThrad").start();
-	}
-	
-	public static Labyrinthe recupererLab() {
+	/**
+	 * Crée un labyrinthe défini de manière fixe.
+	 * @return le labyrinthe généré. (instance de singleton)
+	 */
+	public static Labyrinthe labyrintheFixe() {
 		GenerateurLabyrinthe2D generateur= new GenerateurLabyrinthe2D();
 		generateur.initialiserLabyrintheTest(20,20);
 		generateur.definirMursIndestructibles();
 		generateur.placerDepart(10, 10);
 		generateur.placerArriver(19,18);
-		/*Cr�ation du chemin*/
+		/*Création du chemin*/
 		generateur.rendreLibre(9,10);
 		generateur.rendreLibre(8,10);
 		generateur.rendreLibre(7,10);
@@ -125,8 +139,6 @@ public class SopraMazeApplication extends ArdorBaseApplication{
 		generateur.rendreLibre(1,14);
 		generateur.rendreLibre(1,13);
 		generateur.rendreLibre(1,12);
-		
-		return generateur.laby;
+		return Labyrinthe.getInstance();
 	}
-	
 }
