@@ -9,8 +9,8 @@ public class Labyrinthe {
 	
 	private static Labyrinthe INSTANCE= new Labyrinthe() ;
 	
-	public int nbX =0;
-	public int nbY= 0;
+	public int nbLignes =0;
+	public int nbColonnes= 0;
 	public String nom= null;
 	public List<Bloc> blocs= new LinkedList<Bloc>();
 	public List<Monstre> monstres= new LinkedList<Monstre>();
@@ -22,20 +22,20 @@ public class Labyrinthe {
 		return INSTANCE;
 	}
 	
-	public int getCoordX() {
-		return nbX;
+	public int getNbLignes() {
+		return nbLignes;
 	}
 
-	public void setCoordX(int coordX) {
-		this.nbX = coordX;
+	public void setNbLignes(int nb) {
+		this.nbLignes = nb;
 	}
 
-	public int getCoordY() {
-		return nbY;
+	public int getNbColonnes() {
+		return nbColonnes;
 	}
 
-	public void setCoordY(int coordY) {
-		this.nbY = coordY;
+	public void setNbColonnes(int nb) {
+		this.nbColonnes = nb;
 	}
 
 	public String getNom() {
@@ -54,7 +54,4 @@ public class Labyrinthe {
 		this.blocs = blocs;
 	}
 
-		
-	
-	
 }
