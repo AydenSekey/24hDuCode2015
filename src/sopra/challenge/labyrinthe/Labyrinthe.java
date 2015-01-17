@@ -8,7 +8,7 @@ import sopra.challenge.personnages.Monstre;
 
 public class Labyrinthe {
 	
-	private static Labyrinthe INSTANCE= new Labyrinthe() ;
+	private static Labyrinthe INSTANCE;
 	
 	public int nbLignes =0;
 	public int nbColonnes= 0;
@@ -20,6 +20,9 @@ public class Labyrinthe {
 	
 	public static Labyrinthe getInstance()
 	{	
+		if(INSTANCE == null )
+			INSTANCE = new Labyrinthe();
+		
 		return INSTANCE;
 	}
 
@@ -31,6 +34,11 @@ public class Labyrinthe {
 		}
 		return null;
 	}
+	
+//	public boolean blocEstRenseigne(int x, int y){
+//		return (this.getBloc(x, y) != null);
+//	}
+	
 	public void removeBloc(Bloc b){
 		this.blocs.remove(b);
 	}
