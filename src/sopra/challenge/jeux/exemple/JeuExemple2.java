@@ -13,7 +13,7 @@ public class JeuExemple2 {
 		generateur.definirMursIndestructibles();
 		generateur.placerDepart(10, 10);
 		generateur.placerArriver(19,18);
-		/*Création du chemin*/
+		/*Crï¿½ation du chemin*/
 		generateur.rendreLibre(9,10);
 		generateur.rendreLibre(8,10);
 		generateur.rendreLibre(7,10);
@@ -113,7 +113,9 @@ public class JeuExemple2 {
 		generateur.rendreLibre(1,14);
 		generateur.rendreLibre(1,13);
 		generateur.rendreLibre(1,12);
-		generateur.afficherLabyrinthe();
+		
+		Labyrinthe labyrinthe = Labyrinthe.getInstance();
+		labyrinthe.afficherLabyrinthe();
 		
 	}
 	

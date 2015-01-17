@@ -4,7 +4,6 @@ public class MurNormal extends Mur  {
 
 	public MurNormal(int x, int y) {
 		super(x, y);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -34,7 +33,6 @@ public class MurNormal extends Mur  {
 
 	@Override
 	public boolean isPorte() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
