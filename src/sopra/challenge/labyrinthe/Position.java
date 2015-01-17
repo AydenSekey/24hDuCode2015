@@ -8,5 +8,13 @@ public class Position {
 	public Position() {
 		super();
 	}
+
+	public Position(int coordX, int coordY) {
+		super();
+		this.coordX = coordX;
+		this.coordY = coordY;
+	}
+	
+	
 	
 }

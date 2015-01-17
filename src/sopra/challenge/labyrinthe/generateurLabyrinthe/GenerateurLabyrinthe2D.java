@@ -26,6 +26,7 @@ public class GenerateurLabyrinthe2D {
 			}			
 		}
 	}
+	
 	public void definirMursIndestructibles(){
 		Set<Bloc> mursExterieurs = new HashSet<Bloc>();
 		
@@ -47,38 +48,30 @@ public class GenerateurLabyrinthe2D {
 
 		
 	}
+	
 	public void placerDepart(int x, int y){
 		Bloc bloc = laby.getBloc(x, y);
 		laby.removeBloc(bloc);
 		ZoneDepart zd = new ZoneDepart(x, y);
 		laby.blocs.add(zd);
 	}
+	
 	public void placerArriver(int x, int y){
 		Bloc bloc = laby.getBloc(x, y);
 		laby.removeBloc(bloc);
 		ZoneArrivee zd = new ZoneArrivee(x, y);
 		laby.blocs.add(zd);
 	}
+	
 	public void ajouterblocAuLabyrinthe(Bloc bloc){
 		laby.blocs.add(bloc);
 	}
-	public void afficherLabyrinthe(){
-		for(int i=0;i<laby.nbLignes; i++){
-			for(int j=0;j<laby.nbColonnes; j++){
-				Bloc bloc = laby.getBloc(i, j);
-				if(bloc.isZone() && bloc.isOccupee()){
-					System.out.print(" M ");
-				}else{
-					System.out.print(laby.getBloc(i, j));
-				}
-			}
-			System.out.print("\n");
-		}
-	}
+	
 	public void rendreLibre(int x, int y){
 		Bloc bloc = laby.getBloc(x, y);
 		this.rendreLibre(bloc);
 	}
+	
 	public void rendreLibre(Bloc unBloc){
 		laby.removeBloc(unBloc);
 		Zone zd = new Zone(unBloc.positionBloc.coordX, unBloc.positionBloc.coordY);
