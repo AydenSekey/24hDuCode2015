@@ -8,9 +8,8 @@ public class Monstre {
 	public Bloc positionBloc = null;
 	public String nom= null;
 	
-	public Monstre(String nom) {
+	public Monstre() {
 		super();
-		this.nom = nom;
 	}
 	
 	public Bloc getPositionBloc() {

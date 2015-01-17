@@ -1,26 +1,35 @@
 package sopra.challenge.labyrinthe;
 
-
-
-public class Bloc {
+public abstract class Bloc {
 	public Position positionBloc = new Position();
 	public boolean occupee = false;
+
 	
 	public Bloc(int x, int y) {
 		super();
 		this.positionBloc.coordX =x;
 		this.positionBloc.coordY =y;
 	}
-	
+
+	public abstract boolean isMur();
+
+	public abstract boolean isMurIndestructible();
+
+	public abstract boolean isMurNormal();
+
+	public abstract boolean isZone();
+
+	public abstract boolean isZoneArrivee();
+
+	public abstract boolean isZoneDepart();
 	
 	public boolean isOccupee() {
 		return occupee;
 	}
-
+	
 	public void setOccupee(boolean occupee) {
 		this.occupee = occupee;
 	}
-
 
 	public Position getPositionBloc() {
 		return positionBloc;

@@ -7,4 +7,29 @@ public class MurNormal extends Mur{
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+	public boolean isMurIndestructible() {
+		return false;
+	}
+
+	@Override
+	public boolean isMurNormal() {
+		return true;
+	}
+
+	@Override
+	public boolean isZone() {
+		return false;
+	}
+
+	@Override
+	public boolean isZoneArrivee() {
+		return false;
+	}
+
+	@Override
+	public boolean isZoneDepart() {
+		return false;
+	}
+	
 }
