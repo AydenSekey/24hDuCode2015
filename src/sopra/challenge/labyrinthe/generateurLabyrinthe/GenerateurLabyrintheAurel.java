@@ -269,31 +269,31 @@ public class GenerateurLabyrintheAurel {
 			ajouterMur(xDepart-8, y);
 			ajouterMurIndestructible(xDepart-7,y);
 		}
-		for(int y = yDepart+2; y<=yDepart+6;y++){
+		for(int y = yDepart+2; y<=yDepart+7;y++){
 			ajouterMur(xDepart-8, y);
 			ajouterMurIndestructible(xDepart-7,y);
 		}
-		for(int y = yDepart-6; y<=yDepart-2;y++){
+		for(int y = yDepart-7; y<=yDepart-2;y++){
 			ajouterMur(xDepart+8, y);
 			ajouterMurIndestructible(xDepart+7,y);
 		}
-		for(int y = yDepart+2; y<=yDepart+6;y++){
+		for(int y = yDepart+2; y<=yDepart+7;y++){
 			ajouterMur(xDepart+8, y);
 			ajouterMurIndestructible(xDepart+7,y);
 		}
-		for(int x = xDepart-6; x<=xDepart-2;x++){
+		for(int x = xDepart-7; x<=xDepart-2;x++){
 			ajouterMur(x, yDepart-8);
 			ajouterMurIndestructible(x,yDepart-7);
 		}
-		for(int x = xDepart+2; x<=xDepart+6;x++){
+		for(int x = xDepart+2; x<=xDepart+7;x++){
 			ajouterMur(x, yDepart-8);
 			ajouterMurIndestructible(x,yDepart-7);
 		}
-		for(int x = xDepart-6; x<=xDepart-2;x++){
+		for(int x = xDepart-7; x<=xDepart-2;x++){
 			ajouterMur(x, yDepart+8);
 			ajouterMurIndestructible(x,yDepart+7);
 		}
-		for(int x = xDepart+2; x<=xDepart+6;x++){
+		for(int x = xDepart+2; x<=xDepart+7;x++){
 			ajouterMur(x, yDepart+8);
 			ajouterMurIndestructible(x,yDepart+7);
 		}
