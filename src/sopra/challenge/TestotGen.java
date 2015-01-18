@@ -8,8 +8,9 @@ public class TestotGen {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		Labyrinthe lab = new Labyrinthe("Balaise", 16, 32);
-		GenerateurLabyrintheAurel gen = new GenerateurLabyrintheAurel(lab);
+		
+//		Labyrinthe lab = new Labyrinthe("Balaise", 16, 32);
+//		GenerateurLabyrintheAurel gen = new GenerateurLabyrintheAurel(lab);
 		
 	}
 

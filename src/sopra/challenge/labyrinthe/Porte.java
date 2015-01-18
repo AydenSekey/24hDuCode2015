@@ -87,4 +87,8 @@ public class Porte extends Bloc {
 	public boolean isOpen() {
 		return open;
 	}
+	
+	public String toString(){
+		return " P ";
+	}
 }
