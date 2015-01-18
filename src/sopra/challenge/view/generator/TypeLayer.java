@@ -2,7 +2,7 @@ package sopra.challenge.view.generator;
 
 public enum TypeLayer {
 
-	STONE, SAND, DIRT, STONEBRICK, WOODPLANK, BEDROCK, VOID;
+	STONE, SAND, DIRT, STONEBRICK, WOODPLANK, BEDROCK, VOID, GRASS;
 	
 	public static int getType(TypeLayer type) {
 		
@@ -14,6 +14,7 @@ public enum TypeLayer {
 		case WOODPLANK: return 5;
 		case BEDROCK: return 7;
 		case VOID: return 0;
+		case GRASS: return 2;
 		default: return 1;
 		}
 	}

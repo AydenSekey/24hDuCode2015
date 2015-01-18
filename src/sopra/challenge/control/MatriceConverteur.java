@@ -39,12 +39,12 @@ public class MatriceConverteur {
 			if(Labyrinthe.getInstance().getBloc(x, z).isMurNormal())
 				return hauteurMur;
 			if(Labyrinthe.getInstance().getBloc(x, z).isZoneDepart())
-				return 1;
+				return 2;
 			if(Labyrinthe.getInstance().getBloc(x, z).isZoneArrivee())
-				return 1;
+				return 2;
 		}
 
-		return 0;
+		return 2;
 	}
 
 }

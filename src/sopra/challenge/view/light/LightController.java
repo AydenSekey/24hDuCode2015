@@ -11,13 +11,13 @@ it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-<programm name> is distributed in the hope that it will be useful,
+SopraMaze is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with <programm name>.  If not, see <http://www.gnu.org/licenses/>.
+along with SopraMaze.  If not, see <http://www.gnu.org/licenses/>.
 */
 package sopra.challenge.view.light;
 
@@ -31,6 +31,8 @@ public class LightController implements LightTimeController {
 	private long lastTime;
 	// boolean pour savoir si le jour se leve ou baisse.
 	private boolean leveeJour;
+	private LightListener lightListener;
+	private boolean oldIsNight;
 
 	public LightController(LightManager lightManager) {
 		this.lightManager = lightManager;
@@ -38,6 +40,19 @@ public class LightController implements LightTimeController {
 		dureeDemiJournee = 20000;// 20 secondes
 		lastDemiJourneeTime = new Date().getTime();
 		lastTime = lastDemiJourneeTime;
+		oldIsNight = lightManager.isNight();
+		lightListener = new LightListener() {
+			
+			@Override
+			public void nightStart() {
+				System.out.println("night");
+			}
+			
+			@Override
+			public void dayStart() {
+				System.out.println("day");
+			}
+		};
 	}
 	
 	@Override
@@ -49,12 +64,25 @@ public class LightController implements LightTimeController {
 			lastDemiJourneeTime = time;
 		}
 		if(time - lastTime >= LIGHT_REFRESH_TIME) {
+			// rafraichissement de la lumière
+			final boolean isNight = lightManager.isNight();
 			if(leveeJour) {
+				// le jour est en train de se lever
 				lightManager.increaseLight();
+				if(lightListener != null && !isNight && oldIsNight) {
+					// passage de la nuit au jour
+					lightListener.dayStart();
+				}
 			} else {
+				// la nuit est en train de tomber
 				lightManager.decreaseLight();
+				if(lightListener != null && isNight && !oldIsNight) {
+					// passage du jour à la nuit
+					lightListener.nightStart();
+				}
 			}
 			lastTime = time;
+			oldIsNight = isNight;
 		}
 	}
 }
