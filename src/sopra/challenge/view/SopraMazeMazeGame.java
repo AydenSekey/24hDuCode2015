@@ -19,6 +19,7 @@ import javax.swing.WindowConstants;
 import sopra.challenge.labyrinthe.Labyrinthe;
 import sopra.challenge.view.impor.*;
 import sopra.challenge.view.light.LightController;
+import sopra.challenge.view.light.LightListenerGame;
 import sopra.challenge.view.light.LightManager;
 import sopra.challenge.view.light.SimpleLightManager;
 
@@ -117,6 +118,7 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 
 	@Override
 	public void update(final ReadOnlyTimer timer) {
+		
 		player.update(blockWorld, timer);
 
 		blockWorld.tracePicking(player.getPosition(), player.getDirection(), 50, intersectionResult);
@@ -168,7 +170,7 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 		} catch (final URISyntaxException ex) {
 			ex.printStackTrace();
 		}
-
+		
 		canvas.setTitle("Sopra Maze - 24h du code 2015");
 
 		final SelectDialog dialog = new SelectDialog();
@@ -176,6 +178,7 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 		dialog.setLocationRelativeTo(null);
 		dialog.setVisible(true);
 
+		
 		DataGenerator dataGenerator = null;
 		try {
 			dataGenerator = (DataGenerator) dialog.getSelectedGenerator().newInstance();
@@ -255,7 +258,9 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 		// Ajout d'un light manager sur le monde
 		LightManager lightManager = new SimpleLightManager(blockWorld);
 		// Création du light contrôleur
-		lightController = new LightController(lightManager);
+		LightListenerGame listener = LightListenerGame.getInstance();
+		listener.setGame(this);
+		lightController = new LightController(lightManager, listener);
 
 		blockWorld.startThreads();
 	}
@@ -411,5 +416,9 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 		}
 
 		return orientation;
+	}
+
+	public BlockWorld getBlockWorld() {
+		return blockWorld;
 	}
 }

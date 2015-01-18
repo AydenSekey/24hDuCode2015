@@ -8,6 +8,7 @@ import sopra.challenge.labyrinthe.Bloc;
 import sopra.challenge.labyrinthe.Labyrinthe;
 import sopra.challenge.labyrinthe.MurIndestructible;
 import sopra.challenge.labyrinthe.MurNormal;
+import sopra.challenge.labyrinthe.Porte;
 import sopra.challenge.labyrinthe.Zone;
 import sopra.challenge.labyrinthe.ZoneArrivee;
 import sopra.challenge.labyrinthe.ZoneDepart;
@@ -59,6 +60,13 @@ public class GenerateurLabyrinthe2D {
 		laby.removeBloc(bloc);
 		ZoneArrivee zd = new ZoneArrivee(x, y);
 		laby.blocs.add(zd);
+	}
+	
+	public void placerPorte(int x, int y) {
+		Bloc bloc = laby.getBloc(x, y);
+		laby.removeBloc(bloc);
+		Porte p = new Porte(x, y);
+		laby.blocs.add(p);
 	}
 	
 	public void ajouterblocAuLabyrinthe(Bloc bloc){

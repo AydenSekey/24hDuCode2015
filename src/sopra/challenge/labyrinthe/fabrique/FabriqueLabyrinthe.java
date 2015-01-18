@@ -23,6 +23,7 @@ package sopra.challenge.labyrinthe.fabrique;
 
 import sopra.challenge.labyrinthe.Labyrinthe;
 import sopra.challenge.labyrinthe.generateurLabyrinthe.GenerateurLabyrinthe2D;
+import sopra.challenge.labyrinthe.generateurLabyrinthe.GenerateurLabyrintheAurel;
 
 /**
  * Fabrique pour les différents labyrinthes.
@@ -38,6 +39,8 @@ public class FabriqueLabyrinthe {
 		generateur.initialiserLabyrintheTest(20,20);
 		generateur.definirMursIndestructibles();
 		generateur.placerDepart(10, 10);
+		generateur.placerPorte(10,11);
+		generateur.placerPorte(10,12);
 		generateur.placerArriver(19,18);
 		/*Création du chemin*/
 		generateur.rendreLibre(9,10);
@@ -108,8 +111,8 @@ public class FabriqueLabyrinthe {
 		generateur.rendreLibre(18,17);
 		generateur.rendreLibre(18,18);
 		
-		generateur.rendreLibre(10,11);
-		generateur.rendreLibre(10,12);
+//		generateur.rendreLibre(10,11);
+//		generateur.rendreLibre(10,12);
 		generateur.rendreLibre(10,13);
 		generateur.rendreLibre(10,14);
 		generateur.rendreLibre(10,15);
@@ -139,6 +142,14 @@ public class FabriqueLabyrinthe {
 		generateur.rendreLibre(1,14);
 		generateur.rendreLibre(1,13);
 		generateur.rendreLibre(1,12);
+		return Labyrinthe.getInstance();
+	}
+	
+	public static Labyrinthe labAlea() {
+		GenerateurLabyrintheAurel generateur= new GenerateurLabyrintheAurel();
+		generateur.initialiserLabyrintheTest(21,21);
+		generateur.converter();
+		
 		return Labyrinthe.getInstance();
 	}
 }
