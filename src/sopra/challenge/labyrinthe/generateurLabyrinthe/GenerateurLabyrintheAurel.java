@@ -277,6 +277,14 @@ public class GenerateurLabyrintheAurel {
 			ajouterPorte(xDepart, y);
 			ajouterMur(xDepart+1, y);
 		}
+		placerDepartMilieu(xDepart,yDepart);
+	}
+	
+	private void placerDepartMilieu(int x, int y){
+		Bloc bloc = labyrinthe.getBloc(x, y);
+		labyrinthe.removeBloc(bloc);
+		ZoneDepart zd = new ZoneDepart(x, y);
+		labyrinthe.blocs.add(zd);
 	}
 	
 	private void ajouterSortie() {
