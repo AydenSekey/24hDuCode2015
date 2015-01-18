@@ -164,7 +164,8 @@ public class Labyrinthe {
 	}
 	
 	public void clean(){
-		INSTANCE = null;
+		this.blocs.clear();
+		this.monstres.clear();
 	}
 
 }

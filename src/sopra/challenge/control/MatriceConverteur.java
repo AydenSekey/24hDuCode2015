@@ -27,10 +27,7 @@ public class MatriceConverteur {
 			if(Labyrinthe.getInstance().getBloc(x, z).isZoneArrivee())
 				return TypeLayer.VOID;
 			if(Labyrinthe.getInstance().getBloc(x,z).isPorte()) {
-				if(day)
-					return TypeLayer.VOID;
-				else
-					return TypeLayer.STONEBRICK;
+				return TypeLayer.VOID;
 			}
 		}
 

@@ -1,6 +1,8 @@
 
 package sopra.challenge.view.generator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import sopra.challenge.control.MatriceConverteur;
@@ -122,18 +124,22 @@ public class SopraMazeGenerator implements DataGenerator {
 
 	public void regenerate(SopraMazeMazeGame sopraMazeMazeGame,
 			Labyrinthe lab) {
-		for(Bloc b: lab.blocs) {
-			int startHeight = 0;
+		
+		List<Bloc> cop = lab.blocs;
+		
+		for(Bloc b: cop) {
+			int startHeight = 2;
 			int x = b.getPositionBloc().coordX;
 			int z = b.getPositionBloc().coordY;
 	    	int localHeight = Math.max(0, this.getLayerHeight(1, x, 1, z, null));
 	    	
+	    	// full nettoyage
+	    	for(int y = startHeight; y < 20; y++) {
+	    		sopraMazeMazeGame.getBlockWorld().setBlock(x, y, z, TypeLayer.VOID.type());
+	    	}
 	    	for(int y = startHeight; y < localHeight; y++) {
-	    		   
 	    		sopraMazeMazeGame.getBlockWorld().setBlock(x, y, z, getLayerType(x,y, z, null));
 	    	}
-	    	
-			
 		}
 	}
 }

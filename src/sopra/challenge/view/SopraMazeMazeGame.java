@@ -13,6 +13,7 @@ package sopra.challenge.view;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Timer;
 import java.util.concurrent.Callable;
 
 import javax.swing.WindowConstants;
@@ -453,7 +454,6 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 	public void reload() {
 		FabriqueLabyrinthe.clean();
 		FabriqueLabyrinthe.labAlea();
-		
 		new SopraMazeGenerator().regenerate(this, Labyrinthe.getInstance());
 	}
 }
