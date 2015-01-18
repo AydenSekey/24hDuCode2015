@@ -98,6 +98,8 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 
 	private Node worldNode;
 	private Node textNode;
+	private Node textNode3;
+	private Node textEndNode;
 	private SkyDome skyDome;
 	private QuadBox selectionBox;
 
@@ -111,11 +113,12 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 	private Labyrinthe labyrinthe;
 	private LightController lightController;
 	private Node textNode2;
-
+	
+	private End endCode;
 
 	public SopraMazeMazeGame(Labyrinthe l) {
-		// TODO Auto-generated constructor stub
 		this.labyrinthe = l;
+		endCode = End.NO_END;
 	}
 
 	@Override
@@ -126,6 +129,8 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 		blockWorld.tracePicking(player.getPosition(), player.getDirection(), 50, intersectionResult);
 		if (intersectionResult.hit) {
 			final Pos hitPos = intersectionResult.pos;
+			checkFin(hitPos);
+			updateTextFin();
 			selectionBox.setTranslation(hitPos.x + 0.5, hitPos.y + 0.5, hitPos.z + 0.5);
 		}
 
@@ -144,6 +149,23 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 		lightController.timeRun();
 	}
 
+	private void checkFin(Pos pos) {
+		System.out.println(pos);
+		Bloc bloc = labyrinthe.getBloc(pos.x, pos.z);
+		if(bloc != null && bloc.isZoneArrivee()) {
+			endCode = End.EXIT;
+		}
+	}
+	
+	private void updateTextFin() {
+		textEndNode.detachAllChildren();
+		if(endCode != End.NO_END) {
+			createText(endCode.text(), canvas.getCanvasRenderer().getCamera().getWidth() / 2 - 50, canvas.getCanvasRenderer()
+                .getCamera().getHeight() / 2 - 5, textEndNode);
+		}
+		
+	}
+
 	@Override
 	public void render(final Renderer renderer) {
 		// root.draw(renderer);
@@ -157,6 +179,8 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 		}
 		textNode.draw(renderer);
 		textNode2.draw(renderer);
+		textNode3.draw(renderer);
+		textEndNode.draw(renderer);
 	}
 
 	@Override
@@ -250,11 +274,20 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 
 		textNode = new Node("text");
 		root.attachChild(textNode);
-		createText("JOUR", 10, 10);
+		createText("JOUR", 10, 10,textNode);
 		textNode2 = new Node("compteur");
 		root.attachChild(textNode2);
 		
-
+		textNode3 = new Node("textConsigne");
+        root.attachChild(textNode3);
+        createText("+", canvas.getCanvasRenderer().getCamera().getWidth() / 2 - 5, canvas.getCanvasRenderer()
+                .getCamera().getHeight() / 2 - 10,textNode3);
+        createText("Trouver la sortie du labyrinthe pendant  la journ�e.", 10, 65,textNode3);
+        createText("Attention aux monstres la nuit !!!", 10, 50,textNode3);
+        
+        textEndNode = new Node("textEnd");
+        root.attachChild(textEndNode);
+        
 		// Create box to show selected box
 		selectionBox = new QuadBox("SelectionBox", new Vector3(), 0.501, 0.501, 0.501);
 		selectionBox.getSceneHints().setNormalsMode(NormalsMode.Off);
@@ -282,24 +315,20 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 		listener1.setGame(this);
 		lightController = new LightController(lightManager, listener, textNode2);
 		
-		createText2(String.format("%.0f%%", lightManager.tauxAvancementDayOrNight()), 20, 10);
+		createText(String.format("%.0f%%", lightManager.tauxAvancementDayOrNight()), 20, 10,textNode2);
 
 		blockWorld.startThreads();
+		
 	}
 
-	private void createText(final String text, final int x, final int y) {
+	private void createText(final String text, final int x, final int y,Node textNodeAModif) {
 		final BasicText info = BasicText.createDefaultTextLabel(TEXT_INFO_ID, text, 16);
 		info.getSceneHints().setRenderBucketType(RenderBucketType.Ortho);
 		info.setTranslation(new Vector3(x, y, 0));
-		textNode.attachChild(info);
+		textNodeAModif.attachChild(info);
 	}
 	
-	private void createText2(final String text, final int x, final int y) {
-		final BasicText info = BasicText.createDefaultTextLabel(TEXT_INFO_ID, text, 16);
-		info.getSceneHints().setRenderBucketType(RenderBucketType.Ortho);
-		info.setTranslation(new Vector3(x, y, 0));
-		textNode2.attachChild(info);
-	}
+
 
 	private void updateLighting() {
 		final float light = globalLight * 0.9f + 0.1f;
@@ -455,5 +484,9 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 		FabriqueLabyrinthe.clean();
 		FabriqueLabyrinthe.labAlea();
 		new SopraMazeGenerator().regenerate(this, Labyrinthe.getInstance());
+	}
+	
+	public End getEndCode() {
+		return endCode;
 	}
 }

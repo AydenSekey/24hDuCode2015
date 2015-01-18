@@ -11,6 +11,9 @@ public abstract class Mur extends Bloc{
 	public boolean isMur() {
 		return true;
 	}
+	public boolean isZone() {
+		return false;
+	}
 	public String toString(){
 		return " # ";
 	}
