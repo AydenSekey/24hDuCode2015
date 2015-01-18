@@ -1,7 +1,6 @@
 package sopra.challenge.jeux.exemple;
 
 import sopra.challenge.labyrinthe.Labyrinthe;
-import sopra.challenge.labyrinthe.generateurLabyrinthe.GenerateurLabyrinthe2D;
 import sopra.challenge.labyrinthe.generateurLabyrinthe.GenerateurLabyrintheAurel;
 
 public class JeuExemple3 {
@@ -12,7 +11,9 @@ public class JeuExemple3 {
 		// TODO Auto-generated method stub
 
 		GenerateurLabyrintheAurel generateur= new GenerateurLabyrintheAurel();
-		generateur.initialiserLabyrintheTest(5,5);
+		
+		generateur.initialiserLabyrintheTest(7,7);
+		
 		generateur.converter();
 		
 		Labyrinthe labyrinthe = Labyrinthe.getInstance();
