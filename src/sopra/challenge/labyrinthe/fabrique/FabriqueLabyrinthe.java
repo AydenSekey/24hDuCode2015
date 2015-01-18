@@ -24,6 +24,7 @@ package sopra.challenge.labyrinthe.fabrique;
 import sopra.challenge.labyrinthe.Labyrinthe;
 import sopra.challenge.labyrinthe.generateurLabyrinthe.GenerateurLabyrinthe2D;
 import sopra.challenge.labyrinthe.generateurLabyrinthe.GenerateurLabyrintheAurel;
+import sopra.challenge.personnages.generateurMonstre.GenerateurMonstre;
 
 /**
  * Fabrique pour les différents labyrinthes.
@@ -149,6 +150,9 @@ public class FabriqueLabyrinthe {
 		GenerateurLabyrintheAurel generateur= new GenerateurLabyrintheAurel();
 		generateur.initialiserLabyrintheTest(21,21);
 		generateur.converter();
+		
+		GenerateurMonstre generateurMonstre = new GenerateurMonstre();
+		generateurMonstre.genererMonstres(20);
 		
 		return Labyrinthe.getInstance();
 	}
