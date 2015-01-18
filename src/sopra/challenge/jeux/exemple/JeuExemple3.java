@@ -17,10 +17,8 @@ public class JeuExemple3 {
 		GenerateurLabyrintheAurel generateur= new GenerateurLabyrintheAurel();
 
 		long deb = System.nanoTime();
-		generateur.initialiserLabyrintheTest(11,11);
-		
-		
-		
+		generateur.initialiserLabyrintheTest(7,7);
+
 		generateur.converter();
 		
 		Labyrinthe labyrinthe = Labyrinthe.getInstance();
@@ -32,7 +30,6 @@ public class JeuExemple3 {
 		labyrinthe.afficherLabyrinthe();
 		labyrinthe.deplacerLesMonstres();
 		labyrinthe.afficherLabyrinthe();
-		
 		long fin = System.nanoTime();
 		
 		System.out.println("Secondes : " + (fin-deb)/1000000000.0);
