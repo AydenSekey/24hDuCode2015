@@ -279,7 +279,7 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
         createText("Attention aux monstres la nuit !!!", 10, 50,textNode3);
         
         textEndNode = new Node("textEnd");
-        root.attachChild(textNode);
+        root.attachChild(textEndNode);
         
 		// Create box to show selected box
 		selectionBox = new QuadBox("SelectionBox", new Vector3(), 0.501, 0.501, 0.501);
