@@ -2,6 +2,7 @@
 package sopra.challenge.view.generator;
 
 import sopra.challenge.control.MatriceConverteur;
+import sopra.challenge.labyrinthe.Bloc;
 import sopra.challenge.labyrinthe.Labyrinthe;
 
 import com.ardorcraft.generators.DataGenerator;
@@ -39,7 +40,7 @@ public class SopraMazeGenerator implements DataGenerator {
     	
     	for(int y = startHeight; y < localHeight; y++) {
    
-    		blockScene.setBlock(x,y,z,getLayerType(1,x, z, blockScene));
+    		blockScene.setBlock(x,y,z,getLayerType(x,y, z, blockScene));
     		startHeight++;
     	}
     	
@@ -47,11 +48,28 @@ public class SopraMazeGenerator implements DataGenerator {
             blockScene.setBlock(x, y, z, 0);
         }
     }
-
-    public int getLayerType(int layer, int x, int z, WorldModifier blockScene){
-    	return TypeLayer.getType(MatriceConverteur.getBloc(x, z));
+    
+    private boolean isCamp(int x, int z) {
     	
+    	Bloc b = Labyrinthe.getInstance().getBloc(x, z);
+    	if(b != null) {
+    		return b.isZoneDepart() || b.isZoneArrivee();
+    	}
+    	return false;
+    	//code à deplacer dans le labyrinthe et à traiter bien sur
     }
+
+    public int getLayerType(int x, int y, int z, WorldModifier blockScene){
+    	if(y == 1) {
+    		if(isCamp(x, z))
+    			return TypeLayer.getType(TypeLayer.GRASS);
+    		else
+    			return TypeLayer.getType(TypeLayer.STONE);
+    	}
+    	else 
+    		return TypeLayer.getType(MatriceConverteur.getBloc(x, z));
+    }
+
 
     public int getLayerHeight(int layer, int x, int y, int z, WorldModifier blockScene){
     	return MatriceConverteur.getHauteur(x, z);

@@ -164,7 +164,7 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
             ex.printStackTrace();
         }
 
-        canvas.setTitle("ArdorCraft API Example - RealGame.java");
+        canvas.setTitle("Sopra Maze - 24h du code 2015");
 
         final SelectDialog dialog = new SelectDialog();
         dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -222,17 +222,6 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 
         blockWorld = new BlockWorld(settings);
 
-        // Set block 45 (brickblock) to be a pyramid drawn with the meshproducer
-        final BlockUtil blockUtil = blockWorld.getBlockUtil();
-        final int blockId = 45;
-        blockUtil.setBlockMapping(blockId, 7, 0); // brick block tile coords
-        blockUtil.setBlockType(blockId, BlockType.Transparent); // Not covering the entire box block = not solid
-        final Mesh mesh = new Pyramid("pyramid", 1.0, 1.0);
-        final MeshProducer meshProducer = new MeshProducer(mesh);
-        meshProducer.createOrientations(); // create all permutation rotations of the mesh
-        meshProducer.setTransformTextureCoords(true); // transform 0-1 texcoords to the specific tile
-        blockUtil.setGeometryProducer(blockId, meshProducer);
-
         worldNode = blockWorld.getWorldNode();
         root.attachChild(worldNode);
 
@@ -241,13 +230,6 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 
         textNode = new Node("text");
         root.attachChild(textNode);
-        createText("+", canvas.getCanvasRenderer().getCamera().getWidth() / 2 - 5, canvas.getCanvasRenderer()
-                .getCamera().getHeight() / 2 - 10);
-        createText("[Y/H] Change time of day", 10, 10);
-        createText("[V] Voxelate a mesh at current target pos", 10, 30);
-        createText("[F] Fly/Walk", 10, 50);
-        createText("[0..9] Select blocktype (9=torch)", 10, 70);
-        createText("[LMB/RMB] Add/Remove block", 10, 90);
 
         // Create box to show selected box
         selectionBox = new QuadBox("SelectionBox", new Vector3(), 0.501, 0.501, 0.501);
@@ -324,21 +306,6 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
     }
 
     private void registerTriggers(final LogicalLayer logicalLayer, final MouseManager mouseManager) {
-        logicalLayer.registerTrigger(new InputTrigger(new MouseButtonPressedCondition(MouseButton.LEFT),
-                new TriggerAction() {
-                    @Override
-                    public void perform(final Canvas source, final TwoInputStates inputState, final double tpf) {
-                        addBlock();
-                    }
-                }));
-
-        logicalLayer.registerTrigger(new InputTrigger(new MouseButtonPressedCondition(MouseButton.RIGHT),
-                new TriggerAction() {
-                    @Override
-                    public void perform(final Canvas source, final TwoInputStates inputStates, final double tpf) {
-                        removeBlock();
-                    }
-                }));
 
         logicalLayer.registerTrigger(new InputTrigger(new KeyPressedCondition(Key.F), new TriggerAction() {
             @Override
@@ -354,49 +321,6 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
             }
         }));
 
-        final Predicate<TwoInputStates> numberPressed = new Predicate<TwoInputStates>() {
-            @Override
-            public boolean apply(final TwoInputStates states) {
-                final char keyChar = states.getCurrent().getKeyboardState().getKeyEvent().getKeyChar();
-                if (Character.isDigit(keyChar)) {
-                    blockType = blockTypeLookup[Character.digit(keyChar, 10)];
-                    return true;
-                }
-                return false;
-            }
-        };
-        logicalLayer.registerTrigger(new InputTrigger(numberPressed, new TriggerAction() {
-            @Override
-            public void perform(final Canvas source, final TwoInputStates inputState, final double tpf) {}
-        }));
-
-        logicalLayer.registerTrigger(new InputTrigger(new KeyHeldCondition(Key.Y), new TriggerAction() {
-            @Override
-            public void perform(final Canvas source, final TwoInputStates inputState, final double tpf) {
-                globalLight = (float) Math.min(globalLight + tpf * 0.4, 1);
-                blockWorld.setGlobalLight(globalLight);
-                updateLighting();
-            }
-        }));
-        logicalLayer.registerTrigger(new InputTrigger(new KeyHeldCondition(Key.H), new TriggerAction() {
-            @Override
-            public void perform(final Canvas source, final TwoInputStates inputState, final double tpf) {
-                globalLight = (float) Math.max(globalLight - tpf * 0.4, 0);
-                blockWorld.setGlobalLight(globalLight);
-                updateLighting();
-            }
-        }));
-
-        logicalLayer.registerTrigger(new InputTrigger(new KeyPressedCondition(Key.V), new TriggerAction() {
-            @Override
-            public void perform(final Canvas source, final TwoInputStates inputState, final double tpf) {
-                if (intersectionResult.hit) {
-                    final Pos addPos = intersectionResult.oldPos;
-                    final Voxelator voxelator = new Voxelator(blockWorld, 50, 50, 50);
-                    voxelator.voxelate(addPos, new Teapot(), 1.0f, 43);
-                }
-            }
-        }));
 
         if (mouseManager.isSetGrabbedSupported()) {
             mouseManager.setGrabbed(GrabbedState.GRABBED);

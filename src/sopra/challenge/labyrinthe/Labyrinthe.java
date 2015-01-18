@@ -35,9 +35,7 @@ public class Labyrinthe {
 		return null;
 	}
 	
-//	public boolean blocEstRenseigne(int x, int y){
-//		return (this.getBloc(x, y) != null);
-//	}
+	
 	
 	public void removeBloc(Bloc b){
 		this.blocs.remove(b);
