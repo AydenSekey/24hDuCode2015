@@ -46,8 +46,6 @@ public class GenerateurLabyrinthe2D {
 			MurIndestructible md = new MurIndestructible(b.positionBloc.coordX, b.positionBloc.coordY);
 			laby.blocs.add(md);
 		}
-
-		
 	}
 	
 	public void placerDepart(int x, int y){
