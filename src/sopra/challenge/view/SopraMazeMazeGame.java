@@ -16,6 +16,7 @@ import java.util.concurrent.Callable;
 
 import javax.swing.WindowConstants;
 
+import sopra.challenge.labyrinthe.Bloc;
 import sopra.challenge.labyrinthe.Labyrinthe;
 import sopra.challenge.view.impor.*;
 import sopra.challenge.view.light.LightController;
@@ -199,7 +200,16 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 
 		// Create player object
 		player = new PlayerWithPhysics(logicalLayer);
-		player.getPosition().set(15, 50, 15);
+		
+		Bloc depart = Labyrinthe.getInstance().getDepart();
+		if(depart != null) {
+			player.getPosition().set(depart.getPositionBloc().coordX, 2, depart.getPositionBloc().coordY);
+		}
+		else {
+			player.getPosition().set(0, 20, 0);
+		}
+		
+		
 		player.setWalking(true);
 
 		registerTriggers(logicalLayer, mouseManager);

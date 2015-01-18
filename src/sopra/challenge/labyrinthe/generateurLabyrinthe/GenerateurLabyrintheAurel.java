@@ -265,37 +265,37 @@ public class GenerateurLabyrintheAurel {
 	}
 	
 	private void ajouterMursCamp(int xDepart, int yDepart){
-		for(int x = xDepart-8; x<=xDepart-7; x++){
-			for(int y = yDepart-6; y<=yDepart-2;y++){
-				ajouterMur(x, y);
-			}
-			for(int y = yDepart+2; y<=yDepart+6;y++){
-				ajouterMur(x, y);
-			}
+		for(int y = yDepart-7; y<=yDepart-2;y++){
+			ajouterMur(xDepart-8, y);
+			ajouterMurIndestructible(xDepart-7,y);
 		}
-		for(int x = xDepart+7; x<=xDepart+8; x++){
-			for(int y = yDepart-6; y<=yDepart-2;y++){
-				ajouterMur(x, y);
-			}
-			for(int y = yDepart+2; y<=yDepart+6;y++){
-				ajouterMur(x, y);
-			}
+		for(int y = yDepart+2; y<=yDepart+7;y++){
+			ajouterMur(xDepart-8, y);
+			ajouterMurIndestructible(xDepart-7,y);
 		}
-		for(int y = yDepart-8; y<=yDepart-7; y++){
-			for(int x = xDepart-6; x<=xDepart-2;x++){
-				ajouterMur(x, y);
-			}
-			for(int x = xDepart+2; x<=xDepart+6;x++){
-				ajouterMur(x, y);
-			}
+		for(int y = yDepart-7; y<=yDepart-2;y++){
+			ajouterMur(xDepart+8, y);
+			ajouterMurIndestructible(xDepart+7,y);
 		}
-		for(int y = yDepart+7; y<=yDepart+8; y++){
-			for(int x = xDepart-6; x<=xDepart-2;x++){
-				ajouterMur(x, y);
-			}
-			for(int x = xDepart+2; x<=xDepart+6;x++){
-				ajouterMur(x, y);
-			}
+		for(int y = yDepart+2; y<=yDepart+7;y++){
+			ajouterMur(xDepart+8, y);
+			ajouterMurIndestructible(xDepart+7,y);
+		}
+		for(int x = xDepart-7; x<=xDepart-2;x++){
+			ajouterMur(x, yDepart-8);
+			ajouterMurIndestructible(x,yDepart-7);
+		}
+		for(int x = xDepart+2; x<=xDepart+7;x++){
+			ajouterMur(x, yDepart-8);
+			ajouterMurIndestructible(x,yDepart-7);
+		}
+		for(int x = xDepart-7; x<=xDepart-2;x++){
+			ajouterMur(x, yDepart+8);
+			ajouterMurIndestructible(x,yDepart+7);
+		}
+		for(int x = xDepart+2; x<=xDepart+7;x++){
+			ajouterMur(x, yDepart+8);
+			ajouterMurIndestructible(x,yDepart+7);
 		}
 	}
 	
@@ -459,6 +459,13 @@ public class GenerateurLabyrintheAurel {
 		Bloc bloc = labyrinthe.getBloc(x, y);
 		labyrinthe.removeBloc(bloc);
 		MurNormal blocCourant = new MurNormal(x,y);
+		labyrinthe.blocs.add(blocCourant);
+	}
+	
+	private void ajouterMurIndestructible(int x, int y){
+		Bloc bloc = labyrinthe.getBloc(x, y);
+		labyrinthe.removeBloc(bloc);
+		MurIndestructible blocCourant = new MurIndestructible(x,y);
 		labyrinthe.blocs.add(blocCourant);
 	}
 	
