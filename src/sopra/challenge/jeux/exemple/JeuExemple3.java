@@ -25,7 +25,7 @@ public class JeuExemple3 {
 		labyrinthe.afficherLabyrinthe();
 		
 		GenerateurMonstre generateurMonstre = new GenerateurMonstre();
-		generateurMonstre.genererMonstres(10);
+		generateurMonstre.genererMonstres(1);
 		
 		labyrinthe.afficherLabyrinthe();
 		labyrinthe.deplacerLesMonstres();
