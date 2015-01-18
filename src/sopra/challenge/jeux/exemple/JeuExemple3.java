@@ -1,7 +1,9 @@
 package sopra.challenge.jeux.exemple;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import sopra.challenge.labyrinthe.Labyrinthe;
-import sopra.challenge.labyrinthe.generateurLabyrinthe.GenerateurLabyrinthe2D;
 import sopra.challenge.labyrinthe.generateurLabyrinthe.GenerateurLabyrintheAurel;
 import sopra.challenge.personnages.generateurMonstre.GenerateurMonstre;
 
@@ -13,7 +15,12 @@ public class JeuExemple3 {
 		// TODO Auto-generated method stub
 
 		GenerateurLabyrintheAurel generateur= new GenerateurLabyrintheAurel();
-		generateur.initialiserLabyrintheTest(9,9);
+
+		long deb = System.nanoTime();
+		generateur.initialiserLabyrintheTest(11,11);
+		
+		
+		
 		generateur.converter();
 		
 		Labyrinthe labyrinthe = Labyrinthe.getInstance();
@@ -25,6 +32,12 @@ public class JeuExemple3 {
 		labyrinthe.afficherLabyrinthe();
 		labyrinthe.deplacerLesMonstres();
 		labyrinthe.afficherLabyrinthe();
+		
+		long fin = System.nanoTime();
+		
+		System.out.println("Secondes : " + (fin-deb)/1000000000.0);
+		
+		
 		
 	}
 

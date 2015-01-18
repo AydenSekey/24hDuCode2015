@@ -23,6 +23,11 @@ package sopra.challenge.view.light;
 
 import java.util.Date;
 
+import com.ardor3d.math.Vector3;
+import com.ardor3d.renderer.queue.RenderBucketType;
+import com.ardor3d.scenegraph.Node;
+import com.ardor3d.ui.text.BasicText;
+
 public class LightController implements LightTimeController {
 	private static final long LIGHT_REFRESH_TIME = 10;// temps entre les refreshs de la lumière (0.01s)
 	private final long dureeDemiJournee;
@@ -33,8 +38,9 @@ public class LightController implements LightTimeController {
 	private boolean leveeJour;
 	private LightListener lightListener;
 	private boolean oldIsNight;
+	private Node textNode;
 
-	public LightController(LightManager lightManager, LightListenerGame lightListener) {
+	public LightController(LightManager lightManager, LightListener lightListener, Node textNode) {
 		this.lightManager = lightManager;
 		leveeJour = false;
 		dureeDemiJournee = 40000;// 20 secondes
@@ -42,6 +48,7 @@ public class LightController implements LightTimeController {
 		lastTime = lastDemiJourneeTime;
 		oldIsNight = lightManager.isNight();
 		this.lightListener = lightListener;
+		this.textNode = textNode;
 	}
 	
 	@Override
@@ -72,6 +79,16 @@ public class LightController implements LightTimeController {
 			}
 			lastTime = time;
 			oldIsNight = isNight;
+			updateText();
 		}
+	}
+	
+	private void updateText() {
+		textNode.detachAllChildren();
+		String text = String.format("%.0f%%", lightManager.tauxAvancementDayOrNight());
+		final BasicText info = BasicText.createDefaultTextLabel("compteur", text, 16);
+		info.getSceneHints().setRenderBucketType(RenderBucketType.Ortho);
+		info.setTranslation(new Vector3(10, 25, 0));
+		textNode.attachChild(info);
 	}
 }

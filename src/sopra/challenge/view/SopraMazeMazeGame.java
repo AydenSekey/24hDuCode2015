@@ -24,21 +24,22 @@ import sopra.challenge.view.generator.SopraMazeGenerator;
 import sopra.challenge.view.impor.*;
 //import sopra.challenge.view.impor.LocalServerDataHandler.LocalBlockModifier;
 import sopra.challenge.view.light.LightController;
+import sopra.challenge.view.light.LightListener;
+import sopra.challenge.view.light.LightListenerComposite;
 import sopra.challenge.view.light.LightListenerGame;
 import sopra.challenge.view.light.LightManager;
 import sopra.challenge.view.light.SimpleLightManager;
+import sopra.challenge.view.light.TextLightListener;
 
 import com.ardor3d.framework.Canvas;
 import com.ardor3d.input.GrabbedState;
 import com.ardor3d.input.Key;
-import com.ardor3d.input.MouseButton;
 import com.ardor3d.input.MouseManager;
 import com.ardor3d.input.PhysicalLayer;
 import com.ardor3d.input.logical.InputTrigger;
 import com.ardor3d.input.logical.KeyHeldCondition;
 import com.ardor3d.input.logical.KeyPressedCondition;
 import com.ardor3d.input.logical.LogicalLayer;
-import com.ardor3d.input.logical.MouseButtonPressedCondition;
 import com.ardor3d.input.logical.TriggerAction;
 import com.ardor3d.input.logical.TwoInputStates;
 import com.ardor3d.math.ColorRGBA;
@@ -52,12 +53,9 @@ import com.ardor3d.renderer.queue.RenderBucketType;
 import com.ardor3d.renderer.state.BlendState;
 import com.ardor3d.renderer.state.FogState;
 import com.ardor3d.renderer.state.WireframeState;
-import com.ardor3d.scenegraph.Mesh;
 import com.ardor3d.scenegraph.Node;
 import com.ardor3d.scenegraph.hint.LightCombineMode;
 import com.ardor3d.scenegraph.hint.NormalsMode;
-import com.ardor3d.scenegraph.shape.Pyramid;
-import com.ardor3d.scenegraph.shape.Teapot;
 import com.ardor3d.ui.text.BasicText;
 import com.ardor3d.util.GameTaskQueue;
 import com.ardor3d.util.GameTaskQueueManager;
@@ -69,23 +67,18 @@ import com.ardorcraft.data.Pos;
 import com.ardorcraft.generators.DataGenerator;
 import com.ardorcraft.objects.QuadBox;
 import com.ardorcraft.objects.SkyDome;
-import com.ardorcraft.util.BlockUtil;
 import com.ardorcraft.util.geometryproducers.BoxProducer;
-import com.ardorcraft.util.geometryproducers.MeshProducer;
-import com.ardorcraft.voxel.Voxelator;
 import com.ardorcraft.world.BlockSide;
-import com.ardorcraft.world.BlockType;
 import com.ardorcraft.world.BlockWorld;
 import com.ardorcraft.world.IServerConnection;
 import com.ardorcraft.world.WorldModifier;
 import com.ardorcraft.world.WorldSettings;
-import com.google.common.base.Predicate;
 
 /**
  * A bigger example that will grow over time...
  */
 public class SopraMazeMazeGame implements ArdorCraftGame {
-
+	public static final String TEXT_INFO_ID = "TextJour";
 	private BlockWorld blockWorld;
 	private final int tileSize = 16;
 	private final int height = 150;
@@ -116,6 +109,7 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 
 	private Labyrinthe labyrinthe;
 	private LightController lightController;
+	private Node textNode2;
 
 
 	public SopraMazeMazeGame(Labyrinthe l) {
@@ -161,6 +155,7 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 			selectionBox.draw(renderer);
 		}
 		textNode.draw(renderer);
+		textNode2.draw(renderer);
 	}
 
 	@Override
@@ -254,6 +249,10 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 
 		textNode = new Node("text");
 		root.attachChild(textNode);
+		createText("JOUR", 10, 10);
+		textNode2 = new Node("compteur");
+		root.attachChild(textNode2);
+		
 
 		// Create box to show selected box
 		selectionBox = new QuadBox("SelectionBox", new Vector3(), 0.501, 0.501, 0.501);
@@ -274,18 +273,31 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 		// Ajout d'un light manager sur le monde
 		LightManager lightManager = new SimpleLightManager(blockWorld);
 		// Création du light contrôleur
-		LightListenerGame listener = LightListenerGame.getInstance();
-		listener.setGame(this);
-		lightController = new LightController(lightManager, listener);
+		LightListenerGame listener1 = LightListenerGame.getInstance();
+		LightListener listener2 = new TextLightListener(textNode);
+		LightListenerComposite listener = new LightListenerComposite();
+		listener.addListener(listener1);
+		listener.addListener(listener2);
+		listener1.setGame(this);
+		lightController = new LightController(lightManager, listener, textNode2);
+		
+		createText2(String.format("%.0f%%", lightManager.tauxAvancementDayOrNight()), 20, 10);
 
 		blockWorld.startThreads();
 	}
 
 	private void createText(final String text, final int x, final int y) {
-		final BasicText info = BasicText.createDefaultTextLabel("Text2", text, 16);
+		final BasicText info = BasicText.createDefaultTextLabel(TEXT_INFO_ID, text, 16);
 		info.getSceneHints().setRenderBucketType(RenderBucketType.Ortho);
 		info.setTranslation(new Vector3(x, y, 0));
 		textNode.attachChild(info);
+	}
+	
+	private void createText2(final String text, final int x, final int y) {
+		final BasicText info = BasicText.createDefaultTextLabel(TEXT_INFO_ID, text, 16);
+		info.getSceneHints().setRenderBucketType(RenderBucketType.Ortho);
+		info.setTranslation(new Vector3(x, y, 0));
+		textNode2.attachChild(info);
 	}
 
 	private void updateLighting() {

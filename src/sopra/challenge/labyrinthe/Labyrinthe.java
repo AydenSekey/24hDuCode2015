@@ -101,10 +101,10 @@ public class Labyrinthe {
 	public void deplacerLesMonstres(){
 		for (Monstre m : monstres) {
 			Position posAv = m.getPositionBloc().getPositionBloc();
-			System.out.println("avant: x= " + posAv.coordX + " y= "+posAv.coordY);
+//			System.out.println("avant: x= " + posAv.coordX + " y= "+posAv.coordY);
 			m.deplacer();
 			Position posAp = m.getPositionBloc().getPositionBloc();
-			System.out.println("avant: x= " + posAp.coordX + " y= "+posAp.coordY);
+//			System.out.println("avant: x= " + posAp.coordX + " y= "+posAp.coordY);
 		}
 	}
 	

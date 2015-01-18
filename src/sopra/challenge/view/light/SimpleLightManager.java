@@ -72,6 +72,15 @@ public class SimpleLightManager  implements LightManager {
 	public void day() {
 		world.setGlobalLight(1f);
 	}
+
+	@Override
+	public float tauxAvancementDayOrNight() {
+		if(isNight()) {
+			return (limiteDayNight - world.getGlobalLight()) / limiteDayNight * 100;
+		} else {
+			return (world.getGlobalLight() - limiteDayNight) / (1f - limiteDayNight) * 100;
+		}
+	}
 	
 	
 }
