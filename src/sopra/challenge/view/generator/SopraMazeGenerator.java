@@ -69,7 +69,7 @@ public class SopraMazeGenerator implements DataGenerator {
     			return TypeLayer.getType(TypeLayer.STONE);
     	}
     	else 
-    		return TypeLayer.getType(MatriceConverteur.getBloc(x, z, WSDAYTIME.getInstance().isDayTime()));
+    		return TypeLayer.getType(MatriceConverteur.getBloc(x, z, true));
     		//return TypeLayer.getType(MatriceConverteur.getBloc(x, z, false));
     }
 
