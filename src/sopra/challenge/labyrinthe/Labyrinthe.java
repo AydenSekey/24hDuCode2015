@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.ardorcraft.data.Pos;
+
 import sopra.challenge.personnages.Monstre;
 
 public class Labyrinthe {
@@ -118,16 +120,10 @@ public class Labyrinthe {
 			}
 			System.out.print("\n");
 		}
-		for(int y=nbLignes-1;y>-1; y--){
-			for(int x=0;x<nbColonnes; x++){
-				if(this.estUnBlocAvecUnMonstreCommeVoisin(x, y)){
-					System.out.println("X:");
-				}
-				
-			}
-		}
 	}
-	
+	public boolean estUnBlocAvecUnMonstreCommeVoisin(Pos position){
+		return estUnBlocAvecUnMonstreCommeVoisin (position.x, position.y);
+	}
 	public boolean estUnBlocAvecUnMonstreCommeVoisin(int coordX, int coordY){
 		//Bloc bloc=this.getBloc(coordX, coordY);
 		List<Bloc> voisins = new ArrayList<Bloc>();
@@ -144,7 +140,7 @@ public class Labyrinthe {
 			voisins.add(this.getBloc(coordX, coordY+1));
 		}
 		for(Bloc bloc: voisins){
-			if(bloc.isOccupee())
+			if(bloc.isZone() && !bloc.isPorte() && bloc.isOccupee())
 				return true;
 		}
 				
