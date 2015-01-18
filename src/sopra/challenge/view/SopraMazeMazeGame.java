@@ -92,6 +92,7 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 	private Node worldNode;
 	private Node textNode;
 	private Node textNode3;
+	private Node textEndNode;
 	private SkyDome skyDome;
 	private QuadBox selectionBox;
 
@@ -122,6 +123,7 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 		if (intersectionResult.hit) {
 			final Pos hitPos = intersectionResult.pos;
 			checkFin(hitPos);
+			updateTextFin();
 			selectionBox.setTranslation(hitPos.x + 0.5, hitPos.y + 0.5, hitPos.z + 0.5);
 		}
 
@@ -144,9 +146,17 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 		System.out.println(pos);
 		Bloc bloc = labyrinthe.getBloc(pos.x, pos.z);
 		if(bloc != null && bloc.isZoneArrivee()) {
-			System.out.println("EXIT");
 			endCode = End.EXIT;
 		}
+	}
+	
+	private void updateTextFin() {
+		textEndNode.detachAllChildren();
+		if(endCode != End.NO_END) {
+			createText(endCode.text(), canvas.getCanvasRenderer().getCamera().getWidth() / 2 - 50, canvas.getCanvasRenderer()
+                .getCamera().getHeight() / 2 - 5, textEndNode);
+		}
+		
 	}
 
 	@Override
@@ -163,6 +173,7 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 		textNode.draw(renderer);
 		textNode2.draw(renderer);
 		textNode3.draw(renderer);
+		textEndNode.draw(renderer);
 	}
 
 	@Override
@@ -264,8 +275,11 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
         root.attachChild(textNode3);
         createText("+", canvas.getCanvasRenderer().getCamera().getWidth() / 2 - 5, canvas.getCanvasRenderer()
                 .getCamera().getHeight() / 2 - 10,textNode3);
-        createText("Trouver la sortie du labyrinthe pendant  la journée.", 10, 65,textNode3);
+        createText("Trouver la sortie du labyrinthe pendant  la journï¿½e.", 10, 65,textNode3);
         createText("Attention aux monstres la nuit !!!", 10, 50,textNode3);
+        
+        textEndNode = new Node("textEnd");
+        root.attachChild(textNode);
         
 		// Create box to show selected box
 		selectionBox = new QuadBox("SelectionBox", new Vector3(), 0.501, 0.501, 0.501);
