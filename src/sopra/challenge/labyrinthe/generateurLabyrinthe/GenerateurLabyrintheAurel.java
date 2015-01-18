@@ -61,8 +61,8 @@ public class GenerateurLabyrintheAurel {
 		
 		nbMurPossible = (2 * labyrinthe.nbColonnes * labyrinthe.nbLignes) - labyrinthe.nbColonnes - labyrinthe.nbLignes;
 		nbMurFerme = (labyrinthe.nbColonnes-1) * (labyrinthe.nbLignes-1);
-		System.out.println(nbMurPossible + " " + nbMurFerme);
-		System.out.println(labyrinthe.nbColonnes + " "+ labyrinthe.nbLignes);
+//		System.out.println(nbMurPossible + " " + nbMurFerme);
+//		System.out.println(labyrinthe.nbColonnes + " "+ labyrinthe.nbLignes);
 
 		matriceCases = new uneCase[labyrinthe.nbColonnes*labyrinthe.nbLignes];
 		//unMur[][] matriceMurPossibles = new unMur[labyrinthe.nbX-1][labyrinthe.nbY-1];
@@ -110,9 +110,9 @@ public class GenerateurLabyrintheAurel {
 				
 			}
 			// Mur trouve
-			System.out.println(horOuVert);
-			System.out.println(murAlea + " " + case1 + " " + case2);
-			System.out.println("valcase1: "+matriceCases[case1].getValue() + "valcase2: "+matriceCases[case2].getValue());
+//			System.out.println(horOuVert);
+//			System.out.println(murAlea + " " + case1 + " " + case2);
+//			System.out.println("valcase1: "+matriceCases[case1].getValue() + "valcase2: "+matriceCases[case2].getValue());
 			if (horOuVert==0){
 				tabMurHorizontal[murAlea].setEtat(0);
 			}
@@ -130,19 +130,19 @@ public class GenerateurLabyrintheAurel {
 			
 			imprimMatrice(matriceCases, tabMurHorizontal, tabMurVertical);
 			nbMurOuvert++;
-			System.out.println(nbMurOuvert);
-			System.out.println(labyrinthe.nbColonnes * labyrinthe.nbLignes - 1);
+//			System.out.println(nbMurOuvert);
+//			System.out.println(labyrinthe.nbColonnes * labyrinthe.nbLignes - 1);
 			
 		}
 		
-		for (int k = 0; k < tabMurHorizontal.length; k++) {
-			System.out.print(tabMurHorizontal[k].getEtat());
-			
-		}
-		for (int k = 0; k < tabMurVertical.length; k++) {
-			System.out.print(tabMurVertical[k].getEtat());
-		}
-		System.out.println(tabMurHorizontal.length + " " + tabMurVertical.length);
+//		for (int k = 0; k < tabMurHorizontal.length; k++) {
+//			System.out.print(tabMurHorizontal[k].getEtat());
+//			
+//		}
+//		for (int k = 0; k < tabMurVertical.length; k++) {
+//			System.out.print(tabMurVertical[k].getEtat());
+//		}
+//		System.out.println(tabMurHorizontal.length + " " + tabMurVertical.length);
 		
 		return true;
 	}
@@ -171,48 +171,48 @@ public class GenerateurLabyrintheAurel {
 	
 	private void imprimMatrice(uneCase[] matriceCases, unMur[] tabMurHorizontal, unMur[] tabMurVertical) {
 		// TODO Auto-generated method stub
-		int i, j;
-		for(i=0; i<labyrinthe.nbColonnes; i++) {
-			System.out.println();
-			for(j=0; j<labyrinthe.nbLignes; j++) {
-				System.out.print(matriceCases[i*labyrinthe.nbLignes+j]);
-			}
-		}
-		
-		int iter = 0;
-		int vise = labyrinthe.nbLignes - 1;
-
-		int iterVert = 0;
-		int iterHor = 0;
-		
-		System.out.println();
+//		int i, j;
+//		for(i=0; i<labyrinthe.nbColonnes; i++) {
+//			System.out.println();
+//			for(j=0; j<labyrinthe.nbLignes; j++) {
+//				System.out.print(matriceCases[i*labyrinthe.nbLignes+j]);
+//			}
+//		}
+//		
+//		int iter = 0;
+//		int vise = labyrinthe.nbLignes - 1;
+//
+//		int iterVert = 0;
+//		int iterHor = 0;
+//		
+//		System.out.println();
 //		System.out.print(" |-");
 //		for(i=0; i<labyrinthe.nbY; i++) 
 //			System.out.print("---");
 //		
 //		System.out.println("-|");
 //		System.out.print(" |-");
-		for(i=0; i<nbMurPossible; i++) {
-			iter++;
-			if (iter <= vise)
-				if (vise == labyrinthe.nbLignes - 1)
-					System.out.print(tabMurVertical[iterVert++]);
-				else System.out.print(tabMurHorizontal[iterHor++]);
-			else {
-				if (vise == labyrinthe.nbLignes - 1)
-					vise = labyrinthe.nbLignes;
-				else vise = labyrinthe.nbLignes - 1;
-				iter=1;
-				System.out.println("");
+//		for(i=0; i<nbMurPossible; i++) {
+//			iter++;
+//			if (iter <= vise)
+//				if (vise == labyrinthe.nbLignes - 1)
+//					System.out.print(tabMurVertical[iterVert++]);
+//				else System.out.print(tabMurHorizontal[iterHor++]);
+//			else {
+//				if (vise == labyrinthe.nbLignes - 1)
+//					vise = labyrinthe.nbLignes;
+//				else vise = labyrinthe.nbLignes - 1;
+//				iter=1;
+//				System.out.println("");
 //				System.out.println("-| ");
 //				System.out.print(" |-");
-				if (vise == labyrinthe.nbLignes - 1)
-					System.out.print(tabMurVertical[iterVert++]);
-				else System.out.print(tabMurHorizontal[iterHor++]);
-			}
-		}
-		
-		
+//				if (vise == labyrinthe.nbLignes - 1)
+//					System.out.print(tabMurVertical[iterVert++]);
+//				else System.out.print(tabMurHorizontal[iterHor++]);
+//			}
+//		}
+//		
+//		
 //		System.out.println("-| ");
 //		System.out.print(" |-");
 //		for(i=0; i<labyrinthe.nbY; i++) 
@@ -332,7 +332,7 @@ public class GenerateurLabyrintheAurel {
 		// TODO Auto-generated method stub
 		Random random = new Random();
 		int nbMurExt = mursExterieurs.size();
-		System.out.println(nbMurExt);
+//		System.out.println(nbMurExt);
 		Boolean sortieTrouvee = false;
 		while(!sortieTrouvee){
 			int indiceBloc = random.nextInt(nbMurExt);
@@ -380,32 +380,32 @@ public class GenerateurLabyrintheAurel {
 				
 				y = (i % (initialX-1)) * 5 + 4;
 				x = (i / (initialX-1)) * 5 + 1;
-				System.out.println(" "+x+" "+y);
+//				System.out.println(" "+x+" "+y);
 				ajouterMur(x, y);
 
 				y = (i % (initialX-1)) * 5 + 5;
 				x = (i / (initialX-1)) * 5 + 1;
-				System.out.println(" "+x+" "+y);
+//				System.out.println(" "+x+" "+y);
 				ajouterMur(x, y);
 				
 				y = (i % (initialX-1)) * 5 + 4;
 				x = (i / (initialX-1)) * 5 + 2;
-				System.out.println(" "+x+" "+y);
+//				System.out.println(" "+x+" "+y);
 				ajouterMur(x, y);
 			
 				y = (i % (initialX-1)) * 5 + 5;
 				x = (i / (initialX-1)) * 5 + 2;
-				System.out.println(" "+x+" "+y);
+//				System.out.println(" "+x+" "+y);
 				ajouterMur(x, y);
 			
 				y = (i % (initialX-1)) * 5 + 4;
 				x = (i / (initialX-1)) * 5 + 3;
-				System.out.println(" "+x+" "+y);
+//				System.out.println(" "+x+" "+y);
 				ajouterMur(x, y);
 			
 				y = (i % (initialX-1)) * 5 + 5;
 				x = (i / (initialX-1)) * 5 + 3;
-				System.out.println(" "+x+" "+y);
+//				System.out.println(" "+x+" "+y);
 				ajouterMur(x, y);
 			
 			}
@@ -421,32 +421,32 @@ public class GenerateurLabyrintheAurel {
 				
 				y = (i % initialY) * 5 + 1;
 				x = (i / initialY) * 5 + 4;
-				System.out.println(" "+x+" "+y);
+//				System.out.println(" "+x+" "+y);
 				ajouterMur(x, y);
 
 				y = (i % initialY) * 5 + 1;
 				x = (i / initialY) * 5 + 5;
-				System.out.println(" "+x+" "+y);
+//				System.out.println(" "+x+" "+y);
 				ajouterMur(x, y);
 				
 				y = (i % initialY) * 5 + 2;
 				x = (i / initialY) * 5 + 4;
-				System.out.println(" "+x+" "+y);
+//				System.out.println(" "+x+" "+y);
 				ajouterMur(x, y);
 			
 				y = (i % initialY) * 5 + 2;
 				x = (i / initialY) * 5 + 5;
-				System.out.println(" "+x+" "+y);
+//				System.out.println(" "+x+" "+y);
 				ajouterMur(x, y);
 			
 				y = (i % initialY) * 5 + 3;
 				x = (i / initialY) * 5 + 4;
-				System.out.println(" "+x+" "+y);
+//				System.out.println(" "+x+" "+y);
 				ajouterMur(x, y);
 			
 				y = (i % initialY) * 5 + 3;
 				x = (i / initialY) * 5 + 5;
-				System.out.println(" "+x+" "+y);
+//				System.out.println(" "+x+" "+y);
 				ajouterMur(x, y);
 			
 			}
