@@ -55,8 +55,8 @@ public class GenerateurLabyrintheAurel {
 	
 	private boolean genererLabyrinthe(){
 		
-		if ( labyrinthe.nbColonnes < 3 || labyrinthe.nbLignes < 3 || (labyrinthe.nbLignes % 2) == 0
-				|| (labyrinthe.nbColonnes % 2) == 0)
+		if ( labyrinthe.nbColonnes < 6 || labyrinthe.nbLignes < 6 || (labyrinthe.nbLignes % 2) == 0
+				|| (labyrinthe.nbColonnes % 2) == 0 )
 			return false;
 		
 		nbMurPossible = (2 * labyrinthe.nbColonnes * labyrinthe.nbLignes) - labyrinthe.nbColonnes - labyrinthe.nbLignes;
@@ -250,37 +250,78 @@ public class GenerateurLabyrintheAurel {
 		
 		this.definirMursIndestructibles();
 		this.ajouterSortie();
-		this.ajouterDepart();
+		this.ajouterCamp();
 		
 	}
 	
-	private void ajouterDepart() {
+	private void ajouterCamp() {
 		int xDepart = labyrinthe.getNbColonnes()/2;
 		int yDepart = labyrinthe.getNbLignes()/2;
-		for(int x = xDepart-3; x<=xDepart-2; x++){
-			ajouterMur(x, yDepart-1);
-			ajouterPorte(x, yDepart);
-			ajouterMur(x, yDepart+1);
-		}
-		for(int x = xDepart+2; x<=xDepart+3; x++){
-			ajouterMur(x, yDepart-1);
-			ajouterPorte(x, yDepart);
-			ajouterMur(x, yDepart+1);
-		}
-		for(int y = yDepart-3; y<=yDepart-2; y++){
-			ajouterMur(xDepart-1, y);
-			ajouterPorte(xDepart, y);
-			ajouterMur(xDepart+1, y);
-		}
-		for(int y = yDepart+2; y<=yDepart+3; y++){
-			ajouterMur(xDepart-1, y);
-			ajouterPorte(xDepart, y);
-			ajouterMur(xDepart+1, y);
-		}
-		placerDepartMilieu(xDepart,yDepart);
+		ajouterMursCamp(xDepart, yDepart);
+		ajouterPortes(xDepart, yDepart);
+		placerDepartCamp(xDepart, yDepart);
+		ZoneDepart milieu = (ZoneDepart) labyrinthe.getBloc(xDepart, yDepart);
+		milieu.setMilieu(true);
 	}
 	
-	private void placerDepartMilieu(int x, int y){
+	private void ajouterMursCamp(int xDepart, int yDepart){
+		for(int x = xDepart-8; x<=xDepart-7; x++){
+			for(int y = yDepart-6; y<=yDepart-2;y++){
+				ajouterMur(x, y);
+			}
+			for(int y = yDepart+2; y<=yDepart+6;y++){
+				ajouterMur(x, y);
+			}
+		}
+		for(int x = xDepart+7; x<=xDepart+8; x++){
+			for(int y = yDepart-6; y<=yDepart-2;y++){
+				ajouterMur(x, y);
+			}
+			for(int y = yDepart+2; y<=yDepart+6;y++){
+				ajouterMur(x, y);
+			}
+		}
+		for(int y = yDepart-8; y<=yDepart-7; y++){
+			for(int x = xDepart-6; x<=xDepart-2;x++){
+				ajouterMur(x, y);
+			}
+			for(int x = xDepart+2; x<=xDepart+6;x++){
+				ajouterMur(x, y);
+			}
+		}
+		for(int y = yDepart+7; y<=yDepart+8; y++){
+			for(int x = xDepart-6; x<=xDepart-2;x++){
+				ajouterMur(x, y);
+			}
+			for(int x = xDepart+2; x<=xDepart+6;x++){
+				ajouterMur(x, y);
+			}
+		}
+	}
+	
+	private void ajouterPortes(int xDepart, int yDepart){
+		for(int x = xDepart-1; x<=xDepart+1; x++){
+			ajouterPorte(x, yDepart+7);
+			ajouterPorte(x, yDepart+8);
+			ajouterPorte(x, yDepart-7);
+			ajouterPorte(x, yDepart-8);
+		}
+		for(int y = yDepart-1; y<=yDepart+1; y++){
+			ajouterPorte(xDepart+7,y);
+			ajouterPorte(xDepart+8,y);
+			ajouterPorte(xDepart-7,y);
+			ajouterPorte(xDepart-8,y);
+		}
+	}
+	private void placerDepartCamp(int xDepart, int yDepart){
+		for(int x = xDepart-6; x<=xDepart+6; x++){
+			for(int y = yDepart-6; y<=yDepart+6; y++){
+				placerDepart(x, y);
+			}
+		}
+	}
+	
+	private void placerDepart(int x, int y){
 		Bloc bloc = labyrinthe.getBloc(x, y);
 		labyrinthe.removeBloc(bloc);
 		ZoneDepart zd = new ZoneDepart(x, y);
@@ -453,13 +494,6 @@ public class GenerateurLabyrintheAurel {
 		//labyrinthe.removeBloc(unBloc);
 		Zone zd = new Zone(unBloc.positionBloc.coordX, unBloc.positionBloc.coordY);
 		labyrinthe.blocs.add(zd);
-	}
-	
-	private void placerDepart(int x, int y){
-//		Bloc bloc = labyrinthe.getBloc(x, y);
-//		labyrinthe.removeBloc(bloc);
-//		ZoneDepart zd = new ZoneDepart(x, y);
-//		labyrinthe.blocs.add(zd);
 	}
 	
 	
