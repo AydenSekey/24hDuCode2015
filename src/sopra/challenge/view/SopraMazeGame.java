@@ -51,6 +51,7 @@ import com.ardorcraft.data.Pos;
 import sopra.challenge.view.impor.LocalServerConnection;
 import sopra.challenge.view.impor.LocalServerDataHandler;
 import sopra.challenge.view.light.LightController;
+import sopra.challenge.view.light.LightListenerGame;
 import sopra.challenge.view.light.LightManager;
 import sopra.challenge.view.light.SimpleLightManager;
 
@@ -178,10 +179,12 @@ public class SopraMazeGame implements ArdorCraftGame {
 		createText("JOUR", canvas.getCanvasRenderer().getCamera().getWidth() / 2 - 5, canvas.getCanvasRenderer()
                 .getCamera().getHeight() / 2 - 10);
 
-		// Ajout d'un light manager sur le monde
-		LightManager lightManager = new SimpleLightManager(blockWorld);
-		// Création du light contrôleur
-		lightController = new LightController(lightManager);
+//		// Ajout d'un light manager sur le monde
+//		LightManager lightManager = new SimpleLightManager(blockWorld);
+//		// Création du light contrôleur
+//		LightListenerGame listener = LightListenerGame.getInstance();
+//		listener.setGame(this);
+//		lightController = new LightController(lightManager);
 
 		// Start the processing!
 		blockWorld.startThreads();
