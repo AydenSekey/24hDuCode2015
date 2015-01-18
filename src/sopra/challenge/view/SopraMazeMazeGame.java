@@ -104,11 +104,12 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 	private Labyrinthe labyrinthe;
 	private LightController lightController;
 	private Node textNode2;
-
+	
+	private End endCode;
 
 	public SopraMazeMazeGame(Labyrinthe l) {
-		// TODO Auto-generated constructor stub
 		this.labyrinthe = l;
+		endCode = End.NO_END;
 	}
 
 	@Override
@@ -119,6 +120,7 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 		blockWorld.tracePicking(player.getPosition(), player.getDirection(), 50, intersectionResult);
 		if (intersectionResult.hit) {
 			final Pos hitPos = intersectionResult.pos;
+			checkFin(hitPos);
 			selectionBox.setTranslation(hitPos.x + 0.5, hitPos.y + 0.5, hitPos.z + 0.5);
 		}
 
@@ -135,6 +137,15 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 		blockWorld.updatePlayer(player.getPosition(), player.getDirection());
 		blockWorld.update(timer);
 		lightController.timeRun();
+	}
+
+	private void checkFin(Pos pos) {
+		System.out.println(pos);
+		Bloc bloc = labyrinthe.getBloc(pos.x, pos.z);
+		if(bloc != null && bloc.isZoneArrivee()) {
+			System.out.println("EXIT");
+			endCode = End.EXIT;
+		}
 	}
 
 	@Override
@@ -442,5 +453,9 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 
 	public BlockWorld getBlockWorld() {
 		return blockWorld;
+	}
+
+	public End getEndCode() {
+		return endCode;
 	}
 }
