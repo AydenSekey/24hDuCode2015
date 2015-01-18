@@ -157,7 +157,7 @@ public class Labyrinthe {
 	
 	public Bloc getDepart() {
 		for(Bloc b: blocs){
-			if(b.isZoneDepart())
+			if(b.isZoneDepart() && ((ZoneDepart)b).getMilieu())
 				return b;
 		}
 		return null;
