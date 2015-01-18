@@ -23,6 +23,7 @@ package sopra.challenge.labyrinthe.fabrique;
 
 import sopra.challenge.labyrinthe.Labyrinthe;
 import sopra.challenge.labyrinthe.generateurLabyrinthe.GenerateurLabyrinthe2D;
+import sopra.challenge.labyrinthe.generateurLabyrinthe.GenerateurLabyrintheAurel;
 
 /**
  * Fabrique pour les différents labyrinthes.
@@ -141,6 +142,14 @@ public class FabriqueLabyrinthe {
 		generateur.rendreLibre(1,14);
 		generateur.rendreLibre(1,13);
 		generateur.rendreLibre(1,12);
+		return Labyrinthe.getInstance();
+	}
+	
+	public static Labyrinthe labAlea() {
+		GenerateurLabyrintheAurel generateur= new GenerateurLabyrintheAurel();
+		generateur.initialiserLabyrintheTest(21,21);
+		generateur.converter();
+		
 		return Labyrinthe.getInstance();
 	}
 }

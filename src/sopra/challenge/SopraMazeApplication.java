@@ -21,7 +21,7 @@ public class SopraMazeApplication extends ArdorBaseApplication{
 	}
 	
 	public static Labyrinthe recupererLab() {
-		return FabriqueLabyrinthe.labyrintheFixe();
+		return FabriqueLabyrinthe.labAlea();
 	}
 	
 }
