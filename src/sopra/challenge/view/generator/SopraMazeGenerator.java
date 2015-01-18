@@ -4,6 +4,7 @@ package sopra.challenge.view.generator;
 import sopra.challenge.control.MatriceConverteur;
 import sopra.challenge.labyrinthe.Bloc;
 import sopra.challenge.labyrinthe.Labyrinthe;
+import sopra.challenge.view.light.WSDAYTIME;
 
 import com.ardorcraft.generators.DataGenerator;
 import com.ardorcraft.world.BlockWorld;
@@ -23,6 +24,7 @@ public class SopraMazeGenerator implements DataGenerator {
     @Override
     public void generateChunk(final int xStart, final int zStart, final int xEnd, final int zEnd, int spacing,
             final int height, final WorldModifier blockScene) {
+    	
 		//System.out.println("generate chunk:"+xStart+";"+zStart+";"+xEnd+";"+zEnd+";"+spacing+";"+height);
     	
         for (int x = xStart; x < xEnd; x++) {
@@ -60,14 +62,15 @@ public class SopraMazeGenerator implements DataGenerator {
     }
 
     public int getLayerType(int x, int y, int z, WorldModifier blockScene){
-    	if(y == 1) {
+    	if(y <= 1 ) {
     		if(isCamp(x, z))
     			return TypeLayer.getType(TypeLayer.GRASS);
     		else
     			return TypeLayer.getType(TypeLayer.STONE);
     	}
     	else 
-    		return TypeLayer.getType(MatriceConverteur.getBloc(x, z));
+    		return TypeLayer.getType(MatriceConverteur.getBloc(x, z, WSDAYTIME.getInstance().isDayTime()));
+    		//return TypeLayer.getType(MatriceConverteur.getBloc(x, z, false));
     }
 
 

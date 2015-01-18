@@ -34,25 +34,14 @@ public class LightController implements LightTimeController {
 	private LightListener lightListener;
 	private boolean oldIsNight;
 
-	public LightController(LightManager lightManager) {
+	public LightController(LightManager lightManager, LightListenerGame lightListener) {
 		this.lightManager = lightManager;
 		leveeJour = false;
 		dureeDemiJournee = 20000;// 20 secondes
 		lastDemiJourneeTime = new Date().getTime();
 		lastTime = lastDemiJourneeTime;
 		oldIsNight = lightManager.isNight();
-		lightListener = new LightListener() {
-			
-			@Override
-			public void nightStart() {
-				System.out.println("night");
-			}
-			
-			@Override
-			public void dayStart() {
-				System.out.println("day");
-			}
-		};
+		this.lightListener = lightListener;
 	}
 	
 	@Override

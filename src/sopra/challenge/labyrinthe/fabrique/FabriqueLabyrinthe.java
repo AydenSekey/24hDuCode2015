@@ -38,6 +38,8 @@ public class FabriqueLabyrinthe {
 		generateur.initialiserLabyrintheTest(20,20);
 		generateur.definirMursIndestructibles();
 		generateur.placerDepart(10, 10);
+		generateur.placerPorte(10,11);
+		generateur.placerPorte(10,12);
 		generateur.placerArriver(19,18);
 		/*Création du chemin*/
 		generateur.rendreLibre(9,10);
@@ -108,8 +110,8 @@ public class FabriqueLabyrinthe {
 		generateur.rendreLibre(18,17);
 		generateur.rendreLibre(18,18);
 		
-		generateur.rendreLibre(10,11);
-		generateur.rendreLibre(10,12);
+//		generateur.rendreLibre(10,11);
+//		generateur.rendreLibre(10,12);
 		generateur.rendreLibre(10,13);
 		generateur.rendreLibre(10,14);
 		generateur.rendreLibre(10,15);
