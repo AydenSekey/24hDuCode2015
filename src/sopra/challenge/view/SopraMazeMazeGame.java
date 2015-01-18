@@ -103,6 +103,7 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 
 	private Labyrinthe labyrinthe;
 	private LightController lightController;
+	private Node textNode2;
 
 
 	public SopraMazeMazeGame(Labyrinthe l) {
@@ -148,6 +149,7 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 			selectionBox.draw(renderer);
 		}
 		textNode.draw(renderer);
+		textNode2.draw(renderer);
 	}
 
 	@Override
@@ -242,6 +244,9 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 		textNode = new Node("text");
 		root.attachChild(textNode);
 		createText("JOUR", 10, 10);
+		textNode2 = new Node("compteur");
+		root.attachChild(textNode2);
+		
 
 		// Create box to show selected box
 		selectionBox = new QuadBox("SelectionBox", new Vector3(), 0.501, 0.501, 0.501);
@@ -268,7 +273,9 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 		listener.addListener(listener1);
 		listener.addListener(listener2);
 		listener1.setGame(this);
-		lightController = new LightController(lightManager, listener);
+		lightController = new LightController(lightManager, listener, textNode2);
+		
+		createText2(String.format("%.0f%%", lightManager.tauxAvancementDayOrNight()), 20, 10);
 
 		blockWorld.startThreads();
 	}
@@ -278,6 +285,13 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 		info.getSceneHints().setRenderBucketType(RenderBucketType.Ortho);
 		info.setTranslation(new Vector3(x, y, 0));
 		textNode.attachChild(info);
+	}
+	
+	private void createText2(final String text, final int x, final int y) {
+		final BasicText info = BasicText.createDefaultTextLabel(TEXT_INFO_ID, text, 16);
+		info.getSceneHints().setRenderBucketType(RenderBucketType.Ortho);
+		info.setTranslation(new Vector3(x, y, 0));
+		textNode2.attachChild(info);
 	}
 
 	private void updateLighting() {

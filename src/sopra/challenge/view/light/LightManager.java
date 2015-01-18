@@ -46,4 +46,10 @@ public interface LightManager {
 	 * Passe au jour.
 	 */
 	public void day();
+	
+	/**
+	 * Donne le taux d'avancement du jour ou de la nuit.
+	 * @return le taux d'avancement.
+	 */
+	public float tauxAvancementDayOrNight();
 }
