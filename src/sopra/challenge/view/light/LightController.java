@@ -34,7 +34,7 @@ public class LightController implements LightTimeController {
 	private LightListener lightListener;
 	private boolean oldIsNight;
 
-	public LightController(LightManager lightManager, LightListenerGame lightListener) {
+	public LightController(LightManager lightManager, LightListener lightListener) {
 		this.lightManager = lightManager;
 		leveeJour = false;
 		dureeDemiJournee = 40000;// 20 secondes

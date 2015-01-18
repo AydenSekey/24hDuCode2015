@@ -20,9 +20,12 @@ import sopra.challenge.labyrinthe.Bloc;
 import sopra.challenge.labyrinthe.Labyrinthe;
 import sopra.challenge.view.impor.*;
 import sopra.challenge.view.light.LightController;
+import sopra.challenge.view.light.LightListener;
+import sopra.challenge.view.light.LightListenerComposite;
 import sopra.challenge.view.light.LightListenerGame;
 import sopra.challenge.view.light.LightManager;
 import sopra.challenge.view.light.SimpleLightManager;
+import sopra.challenge.view.light.TextLightListener;
 
 import com.ardor3d.framework.Canvas;
 import com.ardor3d.input.GrabbedState;
@@ -259,8 +262,12 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 		// Ajout d'un light manager sur le monde
 		LightManager lightManager = new SimpleLightManager(blockWorld);
 		// Création du light contrôleur
-		LightListenerGame listener = LightListenerGame.getInstance();
-		listener.setGame(this);
+		LightListenerGame listener1 = LightListenerGame.getInstance();
+		LightListener listener2 = new TextLightListener(textNode);
+		LightListenerComposite listener = new LightListenerComposite();
+		listener.addListener(listener1);
+		listener.addListener(listener2);
+		listener1.setGame(this);
 		lightController = new LightController(lightManager, listener);
 
 		blockWorld.startThreads();
