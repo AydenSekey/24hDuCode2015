@@ -11,7 +11,7 @@ public class MatriceConverteur {
 	private static final int tailleAllee = 3;
 	private static final int tailleCamp = 10;
 	
-	public static TypeLayer getBloc(int x, int z) {
+	public static TypeLayer getBloc(int x, int z, boolean day) {
 		
 		Bloc bloc = Labyrinthe.getInstance().getBloc(x, z);
 		
@@ -24,6 +24,12 @@ public class MatriceConverteur {
 				return TypeLayer.DIRT;
 			if(Labyrinthe.getInstance().getBloc(x, z).isZoneArrivee())
 				return TypeLayer.VOID;
+			if(Labyrinthe.getInstance().getBloc(x,z).isPorte()) {
+				if(day)
+					return TypeLayer.VOID;
+				else
+					return TypeLayer.STONEBRICK;
+			}
 		}
 
 		return TypeLayer.VOID;
@@ -42,6 +48,8 @@ public class MatriceConverteur {
 				return 2;
 			if(Labyrinthe.getInstance().getBloc(x, z).isZoneArrivee())
 				return 2;
+			if(Labyrinthe.getInstance().getBloc(x,z).isPorte())
+				return hauteurMur;
 		}
 
 		return 2;

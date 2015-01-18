@@ -85,6 +85,7 @@ public class LocalServerDataHandler {
 
     private void generateChunks(final int X, final int Z, final int chunksWidth, final int chunksHeight,
             final boolean onlyNew) throws Exception {
+    	
         final long t = System.currentTimeMillis();
 
         final byte localBlock[] = new byte[width * width * height];
