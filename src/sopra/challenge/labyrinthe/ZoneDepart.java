@@ -1,11 +1,18 @@
 package sopra.challenge.labyrinthe;
 
 public class ZoneDepart extends Zone {
+	Boolean milieu = false;
 
 	public ZoneDepart(int x, int y) {
 		super(x, y);
 		// TODO Auto-generated constructor stub
 	}
+
+	
+	public Boolean getMilieu() {
+		return milieu;
+	}
+
 
 	@Override
 	public boolean isMur() {
@@ -32,6 +39,11 @@ public class ZoneDepart extends Zone {
 		return true;
 	}
 	
+	public void setMilieu(Boolean milieu) {
+		this.milieu = milieu;
+	}
+
+
 	public String toString(){
 		return " D ";
 	}

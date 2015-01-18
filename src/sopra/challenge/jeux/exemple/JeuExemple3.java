@@ -13,7 +13,7 @@ public class JeuExemple3 {
 		// TODO Auto-generated method stub
 
 		GenerateurLabyrintheAurel generateur= new GenerateurLabyrintheAurel();
-		generateur.initialiserLabyrintheTest(5,5);
+		generateur.initialiserLabyrintheTest(9,9);
 		generateur.converter();
 		
 		Labyrinthe labyrinthe = Labyrinthe.getInstance();
