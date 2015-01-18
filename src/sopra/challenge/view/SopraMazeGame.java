@@ -30,8 +30,10 @@ import com.ardor3d.math.MathUtils;
 import com.ardor3d.math.Vector3;
 import com.ardor3d.renderer.Camera;
 import com.ardor3d.renderer.Renderer;
+import com.ardor3d.renderer.queue.RenderBucketType;
 import com.ardor3d.scenegraph.Node;
 import com.ardor3d.scenegraph.shape.Teapot;
+import com.ardor3d.ui.text.BasicText;
 import com.ardor3d.util.ReadOnlyTimer;
 import com.ardor3d.util.resource.ResourceLocatorTool;
 import com.ardor3d.util.resource.SimpleResourceLocator;
@@ -78,6 +80,7 @@ public class SopraMazeGame implements ArdorCraftGame {
 	private SkyDome skyDome;
 	private LightController lightController;
 	private final IntersectionResult intersectionResult = new IntersectionResult();
+	private Node textNode;
 
 	public SopraMazeGame(Labyrinthe labyrinthe) {
 		this.labyrinthe = labyrinthe;
@@ -159,6 +162,10 @@ public class SopraMazeGame implements ArdorCraftGame {
 		//sky
 		skyDome = new SkyDome("Dome", 160, 160, 200);
 		root.attachChild(skyDome);
+		
+		// Node de texte
+		textNode = new Node("text");
+        root.attachChild(textNode);
 
 		// Create a local "fake" server
 		final IServerConnection serverConnection = new LocalServerConnection(new LocalServerDataHandler(tileSize,
@@ -168,6 +175,8 @@ public class SopraMazeGame implements ArdorCraftGame {
 		// Create the actual world and put its world node under our main scenegraph node.
 		blockWorld = new BlockWorld(settings);
 		root.attachChild(blockWorld.getWorldNode());
+		createText("JOUR", canvas.getCanvasRenderer().getCamera().getWidth() / 2 - 5, canvas.getCanvasRenderer()
+                .getCamera().getHeight() / 2 - 10);
 
 		// Ajout d'un light manager sur le monde
 		LightManager lightManager = new SimpleLightManager(blockWorld);
@@ -188,7 +197,13 @@ public class SopraMazeGame implements ArdorCraftGame {
 		// TODO Auto-generated method stub
 
 	}
-
+	
+	 private void createText(final String text, final int x, final int y) {
+        final BasicText info = BasicText.createDefaultTextLabel("Text2", text, 16);
+        info.getSceneHints().setRenderBucketType(RenderBucketType.Ortho);
+        info.setTranslation(new Vector3(x, y, 0));
+        textNode.attachChild(info);
+    }
 
 	private void registerTriggers(final LogicalLayer logicalLayer, final MouseManager mouseManager) {
 
