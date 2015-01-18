@@ -18,6 +18,9 @@ import javax.swing.WindowConstants;
 
 import sopra.challenge.labyrinthe.Labyrinthe;
 import sopra.challenge.view.impor.*;
+import sopra.challenge.view.light.LightController;
+import sopra.challenge.view.light.LightManager;
+import sopra.challenge.view.light.SimpleLightManager;
 
 import com.ardor3d.framework.Canvas;
 import com.ardor3d.input.GrabbedState;
@@ -75,331 +78,338 @@ import com.google.common.base.Predicate;
  */
 public class SopraMazeMazeGame implements ArdorCraftGame {
 
-    private BlockWorld blockWorld;
-    private final int tileSize = 16;
-    private final int height = 150;
-    private double farPlane = 10000.0;
+	private BlockWorld blockWorld;
+	private final int tileSize = 16;
+	private final int height = 150;
+	private double farPlane = 10000.0;
 
-    private final IntersectionResult intersectionResult = new IntersectionResult();
+	private final IntersectionResult intersectionResult = new IntersectionResult();
 
-    private final FogState fogState = new FogState();
-    private final ColorRGBA fogColor = new ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f);
-    private final ColorRGBA topColor = new ColorRGBA(0.5f, 0.6f, 1.0f, 1.0f);
+	private final FogState fogState = new FogState();
+	private final ColorRGBA fogColor = new ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f);
+	private final ColorRGBA topColor = new ColorRGBA(0.5f, 0.6f, 1.0f, 1.0f);
 
-    private CanvasRelayer canvas;
-    private Node root;
-    private Camera camera;
-    private PlayerWithPhysics player;
+	private CanvasRelayer canvas;
+	private Node root;
+	private Camera camera;
+	private PlayerWithPhysics player;
 
-    private Node worldNode;
-    private Node textNode;
-    private SkyDome skyDome;
-    private QuadBox selectionBox;
+	private Node worldNode;
+	private Node textNode;
+	private SkyDome skyDome;
+	private QuadBox selectionBox;
 
-    private int blockType = 1;
-    private float globalLight = 1f;
-    private boolean isInWater = false;
-    private final int[] blockTypeLookup = new int[] {
-            1, 47, 4, 5, 20, 95, 12, 45, 48, 50
-    };
+	private int blockType = 1;
+	private float globalLight = 1f;
+	private boolean isInWater = false;
+	private final int[] blockTypeLookup = new int[] {
+			1, 47, 4, 5, 20, 95, 12, 45, 48, 50
+	};
 
-    private Labyrinthe labyrinthe;
-    
-    
-    public SopraMazeMazeGame(Labyrinthe l) {
+	private Labyrinthe labyrinthe;
+	private LightController lightController;
+
+
+	public SopraMazeMazeGame(Labyrinthe l) {
 		// TODO Auto-generated constructor stub
-    	this.labyrinthe = l;
+		this.labyrinthe = l;
 	}
 
 	@Override
-    public void update(final ReadOnlyTimer timer) {
-        player.update(blockWorld, timer);
+	public void update(final ReadOnlyTimer timer) {
+		player.update(blockWorld, timer);
 
-        blockWorld.tracePicking(player.getPosition(), player.getDirection(), 50, intersectionResult);
-        if (intersectionResult.hit) {
-            final Pos hitPos = intersectionResult.pos;
-            selectionBox.setTranslation(hitPos.x + 0.5, hitPos.y + 0.5, hitPos.z + 0.5);
-        }
+		blockWorld.tracePicking(player.getPosition(), player.getDirection(), 50, intersectionResult);
+		if (intersectionResult.hit) {
+			final Pos hitPos = intersectionResult.pos;
+			selectionBox.setTranslation(hitPos.x + 0.5, hitPos.y + 0.5, hitPos.z + 0.5);
+		}
 
-        camera.setLocation(player.getPosition());
-        camera.setDirection(player.getDirection());
-        camera.setUp(player.getUp());
-        camera.setLeft(player.getLeft());
+		camera.setLocation(player.getPosition());
+		camera.setDirection(player.getDirection());
+		camera.setUp(player.getUp());
+		camera.setLeft(player.getLeft());
 
-        skyDome.setTranslation(player.getPosition());
+		skyDome.setTranslation(player.getPosition());
 
-        updateFog(player.getPosition());
+		updateFog(player.getPosition());
 
-        // The infinite world update
-        blockWorld.updatePlayer(player.getPosition(), player.getDirection());
-        blockWorld.update(timer);
-    }
+		// The infinite world update
+		blockWorld.updatePlayer(player.getPosition(), player.getDirection());
+		blockWorld.update(timer);
+		lightController.timeRun();
+	}
 
-    @Override
-    public void render(final Renderer renderer) {
-        // root.draw(renderer);
+	@Override
+	public void render(final Renderer renderer) {
+		// root.draw(renderer);
 
-        // Taking over the drawing to draw in specific order without performance
-        // hogging renderqueue sorting...
-        skyDome.draw(renderer);
-        worldNode.draw(renderer);
-        if (intersectionResult.hit) {
-            selectionBox.draw(renderer);
-        }
-        textNode.draw(renderer);
-    }
+		// Taking over the drawing to draw in specific order without performance
+		// hogging renderqueue sorting...
+		skyDome.draw(renderer);
+		worldNode.draw(renderer);
+		if (intersectionResult.hit) {
+			selectionBox.draw(renderer);
+		}
+		textNode.draw(renderer);
+	}
 
-    @Override
-    public void init(final Node root, final CanvasRelayer canvas, final LogicalLayer logicalLayer,
-            final PhysicalLayer physicalLayer, final MouseManager mouseManager) {
-        this.root = root;
-        this.canvas = canvas;
+	@Override
+	public void init(final Node root, final CanvasRelayer canvas, final LogicalLayer logicalLayer,
+			final PhysicalLayer physicalLayer, final MouseManager mouseManager) {
+		this.root = root;
+		this.canvas = canvas;
 
-        try {
-            final SimpleResourceLocator srl = new SimpleResourceLocator(ResourceLocatorTool.getClassPathResource(
-                    SopraMazeMazeGame.class, "com/ardorcraft/resources"));
-            ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_TEXTURE, srl);
-            ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_MODEL, srl);
-        } catch (final URISyntaxException ex) {
-            ex.printStackTrace();
-        }
+		try {
+			final SimpleResourceLocator srl = new SimpleResourceLocator(ResourceLocatorTool.getClassPathResource(
+					SopraMazeMazeGame.class, "com/ardorcraft/resources"));
+			ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_TEXTURE, srl);
+			ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_MODEL, srl);
+		} catch (final URISyntaxException ex) {
+			ex.printStackTrace();
+		}
 
-        canvas.setTitle("Sopra Maze - 24h du code 2015");
+		canvas.setTitle("Sopra Maze - 24h du code 2015");
 
-        final SelectDialog dialog = new SelectDialog();
-        dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        dialog.setLocationRelativeTo(null);
-        dialog.setVisible(true);
+		final SelectDialog dialog = new SelectDialog();
+		dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		dialog.setLocationRelativeTo(null);
+		dialog.setVisible(true);
 
-        DataGenerator dataGenerator = null;
-        try {
-            dataGenerator = (DataGenerator) dialog.getSelectedGenerator().newInstance();
-        } catch (final Exception e) {
-            e.printStackTrace();
-        }
-        final String texture = dialog.getSelectedTexture();
-        final int textureTileSize = dialog.getSelectedTextureSize();
-        final boolean doOverwriteMap = dialog.getIsOverwriteMap();
-        final int gridSize = dialog.getViewDistance();
+		DataGenerator dataGenerator = null;
+		try {
+			dataGenerator = (DataGenerator) dialog.getSelectedGenerator().newInstance();
+		} catch (final Exception e) {
+			e.printStackTrace();
+		}
+		final String texture = dialog.getSelectedTexture();
+		final int textureTileSize = dialog.getSelectedTextureSize();
+		final boolean doOverwriteMap = dialog.getIsOverwriteMap();
+		final int gridSize = dialog.getViewDistance();
 
-        farPlane = (gridSize - 1) / 2 * tileSize;
+		farPlane = (gridSize - 1) / 2 * tileSize;
 
-        camera = canvas.getCanvasRenderer().getCamera();
-        camera.setFrustumPerspective(75.0, (float) camera.getWidth() / (float) camera.getHeight(), 0.1, farPlane);
+		camera = canvas.getCanvasRenderer().getCamera();
+		camera.setFrustumPerspective(75.0, (float) camera.getWidth() / (float) camera.getHeight(), 0.1, farPlane);
 
-        setupFog();
+		setupFog();
 
-        // Create player object
-        player = new PlayerWithPhysics(logicalLayer);
-        player.getPosition().set(15, 50, 15);
-        player.setWalking(true);
+		// Create player object
+		player = new PlayerWithPhysics(logicalLayer);
+		player.getPosition().set(15, 50, 15);
+		player.setWalking(true);
 
-        registerTriggers(logicalLayer, mouseManager);
+		registerTriggers(logicalLayer, mouseManager);
 
-        // Map file to use
-        final File worldFileSource = new File(dialog.getSelectedGenerator().getSimpleName() + "_Map.acr");
-        // Uncomment this if you want to start your mapfile from scratch each run...
-        if (doOverwriteMap && worldFileSource.exists()) {
-            worldFileSource.delete();
-        }
+		// Map file to use
+		final File worldFileSource = new File(dialog.getSelectedGenerator().getSimpleName() + "_Map.acr");
+		// Uncomment this if you want to start your mapfile from scratch each run...
+		if (doOverwriteMap && worldFileSource.exists()) {
+			worldFileSource.delete();
+		}
 
-        // Create main blockworld handler
-        final WorldSettings settings = new WorldSettings();
+		// Create main blockworld handler
+		final WorldSettings settings = new WorldSettings();
 
-        // Here you can load any terrain texture you wish (should contain 16x16 tiles).
-        // Just make sure you set the correct tilesize, that is, the subtexture size in pixels.
-        settings.setTerrainTexture(ResourceLocatorTool.locateResource(ResourceLocatorTool.TYPE_TEXTURE, texture));
-        settings.setTerrainTextureTileSize(textureTileSize);
+		// Here you can load any terrain texture you wish (should contain 16x16 tiles).
+		// Just make sure you set the correct tilesize, that is, the subtexture size in pixels.
+		settings.setTerrainTexture(ResourceLocatorTool.locateResource(ResourceLocatorTool.TYPE_TEXTURE, texture));
+		settings.setTerrainTextureTileSize(textureTileSize);
 
-        settings.setWaterTexture(ResourceLocatorTool.locateResource(ResourceLocatorTool.TYPE_TEXTURE, "water.png"));
-        settings.setTileSize(tileSize);
-        settings.setTileHeight(height);
-        settings.setGridSize(gridSize);
+		settings.setWaterTexture(ResourceLocatorTool.locateResource(ResourceLocatorTool.TYPE_TEXTURE, "water.png"));
+		settings.setTileSize(tileSize);
+		settings.setTileHeight(height);
+		settings.setGridSize(gridSize);
 
-        final IServerConnection serverConnection = new LocalServerConnection(new LocalServerDataHandler(tileSize,
-                height, gridSize, dataGenerator, null));
-        settings.setServerConnection(serverConnection);
+		final IServerConnection serverConnection = new LocalServerConnection(new LocalServerDataHandler(tileSize,
+				height, gridSize, dataGenerator, null));
+		settings.setServerConnection(serverConnection);
 
-        blockWorld = new BlockWorld(settings);
+		blockWorld = new BlockWorld(settings);
 
-        worldNode = blockWorld.getWorldNode();
-        root.attachChild(worldNode);
+		worldNode = blockWorld.getWorldNode();
+		root.attachChild(worldNode);
 
-        skyDome = new SkyDome("Dome", 8, 8, 10);
-        root.attachChild(skyDome);
+		skyDome = new SkyDome("Dome", 8, 8, 10);
+		root.attachChild(skyDome);
 
-        textNode = new Node("text");
-        root.attachChild(textNode);
+		textNode = new Node("text");
+		root.attachChild(textNode);
 
-        // Create box to show selected box
-        selectionBox = new QuadBox("SelectionBox", new Vector3(), 0.501, 0.501, 0.501);
-        selectionBox.getSceneHints().setNormalsMode(NormalsMode.Off);
-        selectionBox.setDefaultColor(new ColorRGBA(0.1f, 0.1f, 0.1f, 0.4f));
-        selectionBox.getSceneHints().setRenderBucketType(RenderBucketType.Skip);
-        final BlendState bs = new BlendState();
-        bs.setBlendEnabled(true);
-        selectionBox.setRenderState(bs);
-        final WireframeState ws = new WireframeState();
-        ws.setLineWidth(2);
-        selectionBox.setRenderState(ws);
-        selectionBox.getSceneHints().setLightCombineMode(LightCombineMode.Off);
-        root.attachChild(selectionBox);
+		// Create box to show selected box
+		selectionBox = new QuadBox("SelectionBox", new Vector3(), 0.501, 0.501, 0.501);
+		selectionBox.getSceneHints().setNormalsMode(NormalsMode.Off);
+		selectionBox.setDefaultColor(new ColorRGBA(0.1f, 0.1f, 0.1f, 0.4f));
+		selectionBox.getSceneHints().setRenderBucketType(RenderBucketType.Skip);
+		final BlendState bs = new BlendState();
+		bs.setBlendEnabled(true);
+		selectionBox.setRenderState(bs);
+		final WireframeState ws = new WireframeState();
+		ws.setLineWidth(2);
+		selectionBox.setRenderState(ws);
+		selectionBox.getSceneHints().setLightCombineMode(LightCombineMode.Off);
+		root.attachChild(selectionBox);
 
-        updateLighting();
+		updateLighting();
 
-        blockWorld.startThreads();
-    }
+		// Ajout d'un light manager sur le monde
+		LightManager lightManager = new SimpleLightManager(blockWorld);
+		// Création du light contrôleur
+		lightController = new LightController(lightManager);
 
-    private void createText(final String text, final int x, final int y) {
-        final BasicText info = BasicText.createDefaultTextLabel("Text2", text, 16);
-        info.getSceneHints().setRenderBucketType(RenderBucketType.Ortho);
-        info.setTranslation(new Vector3(x, y, 0));
-        textNode.attachChild(info);
-    }
+		blockWorld.startThreads();
+	}
 
-    private void updateLighting() {
-        final float light = globalLight * 0.9f + 0.1f;
-        final ReadOnlyColorRGBA newColor = new ColorRGBA(fogColor).multiplyLocal(light);
-        fogState.setColor(newColor);
-        skyDome.getMidColor().set(newColor);
-        skyDome.getTopColor().set(topColor).multiplyLocal(light);
-        skyDome.updateColors();
+	private void createText(final String text, final int x, final int y) {
+		final BasicText info = BasicText.createDefaultTextLabel("Text2", text, 16);
+		info.getSceneHints().setRenderBucketType(RenderBucketType.Ortho);
+		info.setTranslation(new Vector3(x, y, 0));
+		textNode.attachChild(info);
+	}
 
-        GameTaskQueueManager.getManager(ContextManager.getCurrentContext()).getQueue(GameTaskQueue.RENDER)
-                .enqueue(new Callable<Boolean>() {
-                    @Override
-                    public Boolean call() throws Exception {
-                        canvas.getCanvasRenderer().getRenderer().setBackgroundColor(newColor);
-                        return true;
-                    }
-                });
-    }
+	private void updateLighting() {
+		final float light = globalLight * 0.9f + 0.1f;
+		final ReadOnlyColorRGBA newColor = new ColorRGBA(fogColor).multiplyLocal(light);
+		fogState.setColor(newColor);
+		skyDome.getMidColor().set(newColor);
+		skyDome.getTopColor().set(topColor).multiplyLocal(light);
+		skyDome.updateColors();
 
-    private void setupFog() {
-        fogState.setDensity(1.0f);
-        fogState.setEnabled(true);
-        fogState.setEnd((float) farPlane);
-        fogState.setStart((float) farPlane / 3.0f);
-        fogState.setDensityFunction(FogState.DensityFunction.Linear);
-        fogState.setQuality(FogState.Quality.PerPixel);
-        root.setRenderState(fogState);
-    }
+		GameTaskQueueManager.getManager(ContextManager.getCurrentContext()).getQueue(GameTaskQueue.RENDER)
+		.enqueue(new Callable<Boolean>() {
+			@Override
+			public Boolean call() throws Exception {
+				canvas.getCanvasRenderer().getRenderer().setBackgroundColor(newColor);
+				return true;
+			}
+		});
+	}
 
-    private void updateFog(final Vector3 position) {
-        final int block = blockWorld.getBlock((int) position.getX(), (int) (position.getY() + 0.15),
-                (int) position.getZ());
-        if (block == BlockWorld.WATER && !isInWater) {
-            isInWater = true;
-            fogColor.set(0.1f, 0.13f, 0.25f, 1.0f);
-            topColor.set(0.15f, 0.2f, 0.35f, 1.0f);
-            fogState.setStart(0);
-            fogState.setEnd((float) farPlane / 8);
-            updateLighting();
-        } else if (block == 0 && isInWater) {
-            isInWater = false;
-            fogColor.set(1.0f, 1.0f, 1.0f, 1.0f);
-            topColor.set(0.5f, 0.6f, 1.0f, 1.0f);
-            fogState.setEnd((float) farPlane);
-            fogState.setStart((float) farPlane / 3.0f);
-            updateLighting();
-        }
-    }
+	private void setupFog() {
+		fogState.setDensity(1.0f);
+		fogState.setEnabled(true);
+		fogState.setEnd((float) farPlane);
+		fogState.setStart((float) farPlane / 3.0f);
+		fogState.setDensityFunction(FogState.DensityFunction.Linear);
+		fogState.setQuality(FogState.Quality.PerPixel);
+		root.setRenderState(fogState);
+	}
 
-    private void registerTriggers(final LogicalLayer logicalLayer, final MouseManager mouseManager) {
+	private void updateFog(final Vector3 position) {
+		final int block = blockWorld.getBlock((int) position.getX(), (int) (position.getY() + 0.15),
+				(int) position.getZ());
+		if (block == BlockWorld.WATER && !isInWater) {
+			isInWater = true;
+			fogColor.set(0.1f, 0.13f, 0.25f, 1.0f);
+			topColor.set(0.15f, 0.2f, 0.35f, 1.0f);
+			fogState.setStart(0);
+			fogState.setEnd((float) farPlane / 8);
+			updateLighting();
+		} else if (block == 0 && isInWater) {
+			isInWater = false;
+			fogColor.set(1.0f, 1.0f, 1.0f, 1.0f);
+			topColor.set(0.5f, 0.6f, 1.0f, 1.0f);
+			fogState.setEnd((float) farPlane);
+			fogState.setStart((float) farPlane / 3.0f);
+			updateLighting();
+		}
+	}
 
-        logicalLayer.registerTrigger(new InputTrigger(new KeyPressedCondition(Key.F), new TriggerAction() {
-            @Override
-            public void perform(final Canvas source, final TwoInputStates inputState, final double tpf) {
-                player.setWalking(!player.isWalking());
-            }
-        }));
+	private void registerTriggers(final LogicalLayer logicalLayer, final MouseManager mouseManager) {
 
-        logicalLayer.registerTrigger(new InputTrigger(new KeyHeldCondition(Key.SPACE), new TriggerAction() {
-            @Override
-            public void perform(final Canvas source, final TwoInputStates inputState, final double tpf) {
-                player.jump();
-            }
-        }));
+		logicalLayer.registerTrigger(new InputTrigger(new KeyPressedCondition(Key.F), new TriggerAction() {
+			@Override
+			public void perform(final Canvas source, final TwoInputStates inputState, final double tpf) {
+				player.setWalking(!player.isWalking());
+			}
+		}));
+
+		logicalLayer.registerTrigger(new InputTrigger(new KeyHeldCondition(Key.SPACE), new TriggerAction() {
+			@Override
+			public void perform(final Canvas source, final TwoInputStates inputState, final double tpf) {
+				player.jump();
+			}
+		}));
 
 
-        if (mouseManager.isSetGrabbedSupported()) {
-            mouseManager.setGrabbed(GrabbedState.GRABBED);
-        }
-    }
+		if (mouseManager.isSetGrabbedSupported()) {
+			mouseManager.setGrabbed(GrabbedState.GRABBED);
+		}
+	}
 
-    @Override
-    public void destroy() {
-        blockWorld.stopThreads();
-    }
+	@Override
+	public void destroy() {
+		blockWorld.stopThreads();
+	}
 
-    @Override
-    public void resize(final int newWidth, final int newHeight) {}
+	@Override
+	public void resize(final int newWidth, final int newHeight) {}
 
-    private void addBlock() {
-        if (intersectionResult.hit) {
-            final Pos addPos = intersectionResult.oldPos;
-            if (!player.isPlayerSpace(addPos)) {
-                final BlockSide orientation = getOrientation(blockType);
-                blockWorld.setBlock(addPos.x, addPos.y, addPos.z, blockType, orientation);
-            }
-        }
-    }
+	private void addBlock() {
+		if (intersectionResult.hit) {
+			final Pos addPos = intersectionResult.oldPos;
+			if (!player.isPlayerSpace(addPos)) {
+				final BlockSide orientation = getOrientation(blockType);
+				blockWorld.setBlock(addPos.x, addPos.y, addPos.z, blockType, orientation);
+			}
+		}
+	}
 
-    private void removeBlock() {
-        if (intersectionResult.hit) {
-            final Pos deletePos = intersectionResult.pos;
-            blockWorld.setBlock(deletePos.x, deletePos.y, deletePos.z, 0);
+	private void removeBlock() {
+		if (intersectionResult.hit) {
+			final Pos deletePos = intersectionResult.pos;
+			blockWorld.setBlock(deletePos.x, deletePos.y, deletePos.z, 0);
 
-            final int aboveBlock = blockWorld.getBlock(deletePos.x, deletePos.y + 1, deletePos.z);
-            if (aboveBlock > 99 && aboveBlock < 108) {
-                blockWorld.setBlock(deletePos.x, deletePos.y + 1, deletePos.z, 0);
-            }
-        }
-    }
+			final int aboveBlock = blockWorld.getBlock(deletePos.x, deletePos.y + 1, deletePos.z);
+			if (aboveBlock > 99 && aboveBlock < 108) {
+				blockWorld.setBlock(deletePos.x, deletePos.y + 1, deletePos.z, 0);
+			}
+		}
+	}
 
-    private BlockSide getOrientation(final int blockId) {
-        BlockSide orientation = BlockSide.Front;
+	private BlockSide getOrientation(final int blockId) {
+		BlockSide orientation = BlockSide.Front;
 
-        if (blockWorld.getBlockUtil().getGeometryProducer(blockId) instanceof BoxProducer) {
-            final Vector3 dir = player.getDirection();
-            if (Math.abs(dir.getX()) > Math.abs(dir.getZ())) {
-                if (dir.getX() < 0) {
-                    orientation = BlockSide.Right;
-                } else {
-                    orientation = BlockSide.Left;
-                }
-            } else {
-                if (dir.getZ() < 0) {
-                    orientation = BlockSide.Front;
-                } else {
-                    orientation = BlockSide.Back;
-                }
-            }
-        } else {
-            final int xDir = intersectionResult.oldPos.x - intersectionResult.pos.x;
-            final int yDir = intersectionResult.oldPos.y - intersectionResult.pos.y;
-            final int zDir = intersectionResult.oldPos.z - intersectionResult.pos.z;
-            if (xDir != 0) {
-                if (xDir > 0) {
-                    orientation = BlockSide.Right;
-                } else {
-                    orientation = BlockSide.Left;
-                }
-            } else if (yDir != 0) {
-                if (yDir > 0) {
-                    orientation = BlockSide.Bottom;
-                } else {
-                    orientation = BlockSide.Top;
-                }
-            } else if (zDir != 0) {
-                if (zDir > 0) {
-                    orientation = BlockSide.Front;
-                } else {
-                    orientation = BlockSide.Back;
-                }
-            }
-        }
+		if (blockWorld.getBlockUtil().getGeometryProducer(blockId) instanceof BoxProducer) {
+			final Vector3 dir = player.getDirection();
+			if (Math.abs(dir.getX()) > Math.abs(dir.getZ())) {
+				if (dir.getX() < 0) {
+					orientation = BlockSide.Right;
+				} else {
+					orientation = BlockSide.Left;
+				}
+			} else {
+				if (dir.getZ() < 0) {
+					orientation = BlockSide.Front;
+				} else {
+					orientation = BlockSide.Back;
+				}
+			}
+		} else {
+			final int xDir = intersectionResult.oldPos.x - intersectionResult.pos.x;
+			final int yDir = intersectionResult.oldPos.y - intersectionResult.pos.y;
+			final int zDir = intersectionResult.oldPos.z - intersectionResult.pos.z;
+			if (xDir != 0) {
+				if (xDir > 0) {
+					orientation = BlockSide.Right;
+				} else {
+					orientation = BlockSide.Left;
+				}
+			} else if (yDir != 0) {
+				if (yDir > 0) {
+					orientation = BlockSide.Bottom;
+				} else {
+					orientation = BlockSide.Top;
+				}
+			} else if (zDir != 0) {
+				if (zDir > 0) {
+					orientation = BlockSide.Front;
+				} else {
+					orientation = BlockSide.Back;
+				}
+			}
+		}
 
-        return orientation;
-    }
+		return orientation;
+	}
 }

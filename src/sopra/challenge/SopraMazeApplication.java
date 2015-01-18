@@ -10,7 +10,7 @@ import sopra.challenge.view.impor.ArdorBaseApplication;
 public class SopraMazeApplication extends ArdorBaseApplication{
 
 	public SopraMazeApplication(Labyrinthe l) {
-		super(new SopraMazeGame(l));
+		super(new SopraMazeMazeGame(l));
 	}
 	
 	public static void main(final String[] args) {
