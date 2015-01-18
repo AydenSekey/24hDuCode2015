@@ -7,6 +7,7 @@ import sopra.challenge.control.MatriceConverteur;
 import sopra.challenge.labyrinthe.Bloc;
 import sopra.challenge.labyrinthe.Labyrinthe;
 import sopra.challenge.labyrinthe.ZoneDepart;
+import sopra.challenge.view.SopraMazeMazeGame;
 import sopra.challenge.view.light.WSDAYTIME;
 
 import com.ardor3d.math.MathUtils;
@@ -118,4 +119,21 @@ public class SopraMazeGenerator implements DataGenerator {
             }
         }
     }
+
+	public void regenerate(SopraMazeMazeGame sopraMazeMazeGame,
+			Labyrinthe lab) {
+		for(Bloc b: lab.blocs) {
+			int startHeight = 0;
+			int x = b.getPositionBloc().coordX;
+			int z = b.getPositionBloc().coordY;
+	    	int localHeight = Math.max(0, this.getLayerHeight(1, x, 1, z, null));
+	    	
+	    	for(int y = startHeight; y < localHeight; y++) {
+	    		   
+	    		sopraMazeMazeGame.getBlockWorld().setBlock(x, y, z, getLayerType(x,y, z, null));
+	    	}
+	    	
+			
+		}
+	}
 }

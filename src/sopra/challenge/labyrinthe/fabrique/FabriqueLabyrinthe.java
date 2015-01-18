@@ -156,4 +156,8 @@ public class FabriqueLabyrinthe {
 		
 		return Labyrinthe.getInstance();
 	}
+	
+	public static void clean() {
+		Labyrinthe.getInstance().clean();
+	}
 }

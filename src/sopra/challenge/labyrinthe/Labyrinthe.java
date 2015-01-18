@@ -162,5 +162,9 @@ public class Labyrinthe {
 		}
 		return null;
 	}
+	
+	public void clean(){
+		INSTANCE = null;
+	}
 
 }

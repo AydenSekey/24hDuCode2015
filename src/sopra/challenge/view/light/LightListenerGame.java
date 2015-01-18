@@ -37,6 +37,10 @@ public class LightListenerGame implements LightListener{
 	@Override
 	public void dayStart() {
 		// TODO Auto-generated method stub
+		System.out.println("JOUR");
+		
+		this.game.reload();
+		
 		for(Porte porte : portes) {
 			for(int y = 2; y < MatriceConverteur.getHauteur(porte.getPositionBloc().coordX, porte.getPositionBloc().coordY); y++) {
 				this.game.getBlockWorld().setBlock(porte.getPositionBloc().coordX, y, porte.getPositionBloc().coordY, TypeLayer.VOID.type());

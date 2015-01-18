@@ -12,13 +12,17 @@ package sopra.challenge.view;
 
 import java.io.File;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 import javax.swing.WindowConstants;
 
 import sopra.challenge.labyrinthe.Bloc;
 import sopra.challenge.labyrinthe.Labyrinthe;
+import sopra.challenge.labyrinthe.fabrique.FabriqueLabyrinthe;
+import sopra.challenge.view.generator.SopraMazeGenerator;
 import sopra.challenge.view.impor.*;
+//import sopra.challenge.view.impor.LocalServerDataHandler.LocalBlockModifier;
 import sopra.challenge.view.light.LightController;
 import sopra.challenge.view.light.LightListenerGame;
 import sopra.challenge.view.light.LightManager;
@@ -38,6 +42,7 @@ import com.ardor3d.input.logical.MouseButtonPressedCondition;
 import com.ardor3d.input.logical.TriggerAction;
 import com.ardor3d.input.logical.TwoInputStates;
 import com.ardor3d.math.ColorRGBA;
+import com.ardor3d.math.MathUtils;
 import com.ardor3d.math.Vector3;
 import com.ardor3d.math.type.ReadOnlyColorRGBA;
 import com.ardor3d.renderer.Camera;
@@ -72,6 +77,7 @@ import com.ardorcraft.world.BlockSide;
 import com.ardorcraft.world.BlockType;
 import com.ardorcraft.world.BlockWorld;
 import com.ardorcraft.world.IServerConnection;
+import com.ardorcraft.world.WorldModifier;
 import com.ardorcraft.world.WorldSettings;
 import com.google.common.base.Predicate;
 
@@ -203,7 +209,7 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 		
 		Bloc depart = Labyrinthe.getInstance().getDepart();
 		if(depart != null) {
-			player.getPosition().set(depart.getPositionBloc().coordX, 2, depart.getPositionBloc().coordY);
+			player.getPosition().set(depart.getPositionBloc().coordX+2, 2, depart.getPositionBloc().coordY+2);
 		}
 		else {
 			player.getPosition().set(0, 20, 0);
@@ -430,5 +436,12 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 
 	public BlockWorld getBlockWorld() {
 		return blockWorld;
+	}
+	
+	public void reload() {
+		FabriqueLabyrinthe.clean();
+		FabriqueLabyrinthe.labAlea();
+		
+		new SopraMazeGenerator().regenerate(this, Labyrinthe.getInstance());
 	}
 }
