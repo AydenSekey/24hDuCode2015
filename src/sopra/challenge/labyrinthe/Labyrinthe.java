@@ -100,11 +100,9 @@ public class Labyrinthe {
 	
 	public void deplacerLesMonstres(){
 		for (Monstre m : monstres) {
-			Position posAv = m.getPositionBloc().getPositionBloc();
-//			System.out.println("avant: x= " + posAv.coordX + " y= "+posAv.coordY);
+			
 			m.deplacer();
-			Position posAp = m.getPositionBloc().getPositionBloc();
-//			System.out.println("avant: x= " + posAp.coordX + " y= "+posAp.coordY);
+
 		}
 	}
 	
@@ -120,9 +118,38 @@ public class Labyrinthe {
 			}
 			System.out.print("\n");
 		}
+		for(int y=nbLignes-1;y>-1; y--){
+			for(int x=0;x<nbColonnes; x++){
+				if(this.estUnBlocAvecUnMonstreCommeVoisin(x, y)){
+					System.out.println("X:");
+				}
+				
+			}
+		}
 	}
 	
-	
+	public boolean estUnBlocAvecUnMonstreCommeVoisin(int coordX, int coordY){
+		//Bloc bloc=this.getBloc(coordX, coordY);
+		List<Bloc> voisins = new ArrayList<Bloc>();
+		if(coordX > 0){
+			voisins.add(this.getBloc(coordX-1, coordY));
+		}
+		if(coordX < this.nbColonnes-1){
+			voisins.add(this.getBloc(coordX+1, coordY));
+		}
+		if(coordY > 0){
+			voisins.add(this.getBloc(coordX, coordY-1));
+		}
+		if(coordY < this.nbLignes-1){
+			voisins.add(this.getBloc(coordX, coordY+1));
+		}
+		for(Bloc bloc: voisins){
+			if(bloc.isOccupee())
+				return true;
+		}
+				
+		return false;
+	}
 	public List<Monstre> getMonstres() {
 		return monstres;
 	}

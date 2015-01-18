@@ -91,6 +91,7 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 
 	private Node worldNode;
 	private Node textNode;
+	private Node textNode3;
 	private SkyDome skyDome;
 	private QuadBox selectionBox;
 
@@ -150,6 +151,7 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 		}
 		textNode.draw(renderer);
 		textNode2.draw(renderer);
+		textNode3.draw(renderer);
 	}
 
 	@Override
@@ -243,11 +245,17 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 
 		textNode = new Node("text");
 		root.attachChild(textNode);
-		createText("JOUR", 10, 10);
+		createText("JOUR", 10, 10,textNode);
 		textNode2 = new Node("compteur");
 		root.attachChild(textNode2);
 		
-
+		textNode3 = new Node("textConsigne");
+        root.attachChild(textNode3);
+        createText("+", canvas.getCanvasRenderer().getCamera().getWidth() / 2 - 5, canvas.getCanvasRenderer()
+                .getCamera().getHeight() / 2 - 10,textNode3);
+        createText("Trouver la sortie du labyrinthe pendant  la journée.", 10, 65,textNode3);
+        createText("Attention aux monstres la nuit !!!", 10, 50,textNode3);
+        
 		// Create box to show selected box
 		selectionBox = new QuadBox("SelectionBox", new Vector3(), 0.501, 0.501, 0.501);
 		selectionBox.getSceneHints().setNormalsMode(NormalsMode.Off);
@@ -275,24 +283,20 @@ public class SopraMazeMazeGame implements ArdorCraftGame {
 		listener1.setGame(this);
 		lightController = new LightController(lightManager, listener, textNode2);
 		
-		createText2(String.format("%.0f%%", lightManager.tauxAvancementDayOrNight()), 20, 10);
+		createText(String.format("%.0f%%", lightManager.tauxAvancementDayOrNight()), 20, 10,textNode2);
 
 		blockWorld.startThreads();
+		
 	}
 
-	private void createText(final String text, final int x, final int y) {
+	private void createText(final String text, final int x, final int y,Node textNodeAModif) {
 		final BasicText info = BasicText.createDefaultTextLabel(TEXT_INFO_ID, text, 16);
 		info.getSceneHints().setRenderBucketType(RenderBucketType.Ortho);
 		info.setTranslation(new Vector3(x, y, 0));
-		textNode.attachChild(info);
+		textNodeAModif.attachChild(info);
 	}
 	
-	private void createText2(final String text, final int x, final int y) {
-		final BasicText info = BasicText.createDefaultTextLabel(TEXT_INFO_ID, text, 16);
-		info.getSceneHints().setRenderBucketType(RenderBucketType.Ortho);
-		info.setTranslation(new Vector3(x, y, 0));
-		textNode2.attachChild(info);
-	}
+
 
 	private void updateLighting() {
 		final float light = globalLight * 0.9f + 0.1f;
