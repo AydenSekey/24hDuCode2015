@@ -1,7 +1,11 @@
 # 24hDuCode2015
+Ce projet est un résultat du challenge des 24h du code de 2015. 
+
+# Version de fin de challenge
+La version délivrée à la fin du challenge des 24h est tagué Fin_24h.
 
 # Licence
-Copyright SopraSteria (2015)
+Copyright Sopra Steria (2015)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
